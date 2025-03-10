@@ -26,13 +26,19 @@
 \usepackage{thm-restate}
 \usepackage{mathrsfs}
 \usepackage{qcircuit}
+\usepackage{yquant}
+\usepackage{nccmath}
+\usepackage{placeins}
+\usepackage{physics}
+\usepackage{comment}
+\usepackage[normalem]{ulem}
+
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{corollary}[theorem]{Corollary}
 
-\DeclareMathOperator{\Tr}{Tr}
 \DeclareMathOperator{\sinc}{sinc}
 \DeclareMathOperator{\hermMathOp}{Herm}
 \DeclareMathOperator{\im}{Im}
@@ -69,8 +75,9 @@
   \mainmatter
     \input{chapter_intro}
     \input{chapter_composite_simulations}
-    \input{chapter_numerics}
     \input{chapter_thermal_state_prep}
+    \input{chapter_numerics}
+    \input{conclusion}
   \appendix
   \input{appendices}
   \backmatter
