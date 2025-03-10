@@ -1,0 +1,19 @@
+{
+    "alpha_start": 1e-2,
+    "alpha_stop": 1e-4,
+    "alpha_steps": 20,
+    "alpha_logspace": true,
+    "beta_env": 0.5,
+    "beta_sys_start": 1e-10,
+    "beta_sys_stop": 0.6,
+    "beta_sys_steps": 2,
+    "beta_sys_logspace": true,
+    "env_gap_start": 0.94,
+    "env_gap_stop": 1.06,
+    "env_gap_steps": 40,
+    "env_gap_logspace": false,
+    "h_sys": "HarmonicOscillator",
+    "dim_sys": 2,
+    "num_samples": 5000,
+    "time": 5e2
+}
