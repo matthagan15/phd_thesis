@@ -1,11 +1,71 @@
+% !TeX TS-program = pdflatex
+% !BIB TS-program = biber
+% !TeX root = main.tex
 \documentclass{ut-thesis}
+% packages
+% \usepackage[colorlinks]{hyperref} % for links
+\usepackage[backend=biber]{biblatex} % for references
+\usepackage{graphicx} % for embedding graphics
+\usepackage{booktabs} % for pretty tables
+\usepackage{lipsum} % for gibberish text
+\usepackage{setspace}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb}
+%\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{dsfont}
+\usepackage{xcolor}
+\usepackage{algorithm,algpseudocode}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{cleveref}
+% \usepackage{nicefrac}
+% \usepackage[super]{nth}
+\newcommand{\ts}{\textsuperscript}
+\usepackage{thm-restate}
+\usepackage{mathrsfs}
+\usepackage{qcircuit}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\declaretheorem[name=Theorem, numberwithin=section]{thm}
+\declaretheorem[name=Lemma, numberwithin=section]{lemmer}
+
+\usepackage{todonotes}
+
+% author data
+\author{Matthew Hagan}
+\title{Title of the Example Thesis}
+\degree{Doctor of Philosophy}
+\department[]{Department of Physics}
+\gradyear{2025}
+% reference database
+\addbibresource{main.bib}
 \begin{document}
   \frontmatter
-  \maketitle
-  \begin{abstract}
-    The abstract.
-  \end{abstract}
-  \tableofcontents
+    \maketitle
+    \begin{abstract}
+      abstract state of mind
+    \end{abstract}
+    \begin{dedication}
+      To 
+    \end{dedication}
+    \begin{acknowledgements}
+      Thanks Mom
+    \end{acknowledgements}
+    \tableofcontents
+    \listoftables
+    \listoffigures
   \mainmatter
-  Hello World!
+    \input{chapter_intro}
+    \input{chapter_composite_simulations}
+    \input{chapter_numerics}
+    \input{chapter_thermal_state_prep}
+  \appendix
+  \backmatter
+  \printbibliography[heading=bibintoc]
 \end{document}
