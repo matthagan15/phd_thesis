@@ -685,65 +685,6 @@ We can compute the spectrum via the characteristic polynomial $\det(\lambda \ide
     \end{equation}
 \end{proof}
 
-
-
-\subsection{Numerics} \label{sec:specific_numerics}
-Now that we have rigorous bounds on each of the parameters $\alpha, t$ and $L$ needed to prepare thermal states of simple systems, we turn to numerics to test these bounds. The first question we explore is how the total simulation time $L \cdot t$ behaves as a function of $\alpha$ and $t$. After, we examine the dependence of the total simulation time on the inverse temperature $\beta$ and we observe a Mpemba-like effect where we find higher temperature states can cool faster than lower temperature ones~\cite{auerbach1995supercooling}. Finally, we demonstrate how our proof techniques could be leading to worse $\epsilon$ scaling than appears numerically necessary. Throughout these experiments we have the same numeric method of starting with the maximally mixed state $\rho_S(0)$ and performing a search on the minimal number of interactions needed for the mean trace distance over all samples to be less than the target $\epsilon$. The number of samples is increased until the variance in the trace distance is less than an order of magnitude below the mean.
-
-In Figure \ref{fig:tot_time_vs_single_time} we explore the total simulation time needed to prepare a thermal state with $\beta = 2.0$ and $\epsilon = 0.05$ for a single qubit system. We plot the total simulation time $L \cdot t$ needed as a function of $t$ for various settings of $\alpha$. We find that increasing both parameters tends to decrease the overall cost until a saturation point is reached, which is at a value of $t$ slightly larger $1/\alpha$. For a fixed value of $\alpha$ this initial decrease in $L \cdot t$ is inverse with $t$, in agreement with our finding of $L \in \bigotilde{t^{-2}}$ in Eq. \eqref{eq:single_qubit_l_bound_2} for $\sigma = 0$. However, this process of decreasing the cost by increasing $t$ can only scale so far and appears to run into a minimum number of interactions $L$ required to thermalize. After this saturation point $L \cdot t$ scales linearly with $t$, indicating that the number of interactions $L$ has reached a minimum. 
-
-Another major take away from Figure \ref{fig:tot_time_vs_single_time} is that it demonstrates that our thermalizing channel is exceptionally robust beyond the weak-coupling expansion in which we can theoretically analyze it. The values of $\alpha t$ used in the far right of the plot completely break our weak-coupling expansion, as we have values of $\widetilde{\alpha}$ that reach up to 500. One interesting phenomenon that we do not have an explanation for is the ``clumping" of various settings of $\alpha$ in the large $t$ limit. As $\alpha t$ dictates the amount of time that the random interaction term $G$ is simulated for, it could be that once a minimum amount of randomness is added via this interaction it is no longer beneficial in causing transitions among system eigenstates. 
-
-\begin{figure} 
-    \centering
-    \includegraphics[width=0.75\linewidth]{tsp_numerics/data/single_qubit_tot_time_vs_t.pdf}
-    \caption{Total simulation time for a single qubit system to reach within trace distance of $0.05$ of the thermal state for $\beta = 2$ as a function of per-interaction simulation time $t$. The slope of the large $t$ asymptote is $\approx$ 1.01.}\label{fig:tot_time_vs_single_time}
-\end{figure}
-
-The next task we have is to examine the $\beta$ dependence. For the harmonic oscillator Theorem \ref{thm:harmonic_oscillator} is helpful for giving an idea of the total simulation time for the ground state but we cannot extend it to finite $\beta$ due to the special structure of the transition matrix in the $\beta \to \infty$ limit. Perturbation theory could possibly be used to extend the computation of the spectral gap to the low temperature regime, but even then it would break down for large temperature (small $\beta$). For generic $\beta$ the structure of the harmonic oscillator transition matrix is tridiagonal but it is not quite Toeplitz, as the main diagonals deviate in the upper left and bottom right corners. We could try to pull these deviations into a separate matrix and treat them as perturbations to a fully Toeplitz matrix, which we can then compute the spectrum of. The issue with this approach is that these deviations are on the order of $\widetilde{\alpha}^2 q(0)$ and $\widetilde{\alpha}^2 q(1)$, which are comparable to the eigenvalues of the unperturbed matrix.
-
-In Figure \ref{fig:sho_total_time_vs_beta} we are able to probe the total simulation time and spectral gap of the harmonic oscillator as a function of $\beta$. We reveal a rather surprising Mpemba-like phenomenon where it takes longer for an infinite temperature initial state (the maximally mixed state) to cool to intermediate temperatures than low temperature states. The Mpemba effect \cite{mpemba} is a classical phenomenon related to the time needed to freeze hot water compared to room temperature water with mentions going all the way back to Aristotle. This phenomenon has been extended to quantum thermodynamics and observed in both theory \cite{nickMpemba}, \cite{mpembaExplanation} and in recent experimental research \cite{zhang2025mpembaObservation}. Our observations are not only a further analytic observation, but we are able to provide a proposed mechanism that explains the behavior. It is clear that the distance of our initial state to the target thermal state $\norm{\rho_S(\beta) - \rho_S(\infty)}_1$ increases monotonically with $\beta$ but what is not obvious is that the spectral gap of the underlying Markov chain is \emph{also} increasing. As larger spectral gaps lead to quicker convergences this acts in an opposite way on the total simulation time. The end result is that for small $\beta$ the increase in initial distance is stronger than the increase in the spectral gap and $L \cdot t$ increases. After some amount of $\beta$ these forces flip and the spectral gap effects become stronger than the initial state distance increasing, leading to a reduction in $L \cdot t$. This phenomenon appears to become more pronounced as the dimension of the harmonic oscillator increases, as can be seem in the $\dim_S = 10$ data. Two things remain unclear: the first is what parameters affect the position and height of the peak in total simulation time and the second is if this behavior is present in Hamiltonians with more complicated eigenvalue difference structure than the harmonic oscillator.
-
-\begin{figure}[t]
-    \centering
-    \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{tsp_numerics/data/sho_total_time_vs_beta_dim_4.pdf}
-    \caption{Minimum Interactions vs. $\beta$, $\dim = 4$}
-    \label{fig:sho_l_vs_beta_dim_4}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-    \vspace{0.7cm}
-    \includegraphics[width=\textwidth]{tsp_numerics/data/spec_gap_dim_4.pdf}
-    \caption{Spectral Gap $\widetilde{\lambda}_\star(\beta)$ vs. $\beta$, $\dim = 4$}
-    \label{fig:sho_spectral_gap_vs_beta}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{tsp_numerics/data/sho_total_time_vs_beta_dim_10.pdf}
-    \caption{Total simulation time vs. $\beta$, $\dim = 10$}
-    \label{fig:sho_l_vs_beta_dim_10}
-    \end{subfigure}
-    \caption{Demonstration of $\beta$ dependence of the thermalizing channel $\Phi$ for the truncated harmonic oscillator. The environment gap $\gamma$ was tuned to match the system gap $\Delta$ exactly. The minimal number of interactions was found by binary search over values of $L$ that have an average error of less than $\epsilon = 0.05$ with 100 samples.}
-    \label{fig:sho_total_time_vs_beta}
-\end{figure}
-
-The analytic proofs given in Theorems \ref{thm:single_qubit} and \ref{thm:harmonic_oscillator} are entirely based on our weak-coupling expansion derived in Section \ref{sec:weak_coupling}. The high level picture of this expansion is that we have a remainder error that scales like $\bigo{(\alpha t)^3}$ and an off-resonance error that scales as $\bigo{\alpha^2}$. To balance these two terms we then set $\alpha = \bigo{1/t^3}$. However, as seen in Figure \ref{fig:tot_time_vs_single_time} our thermalization routine appears to be quite robust beyond this weak-coupling expansion, which could lead to significant improvements in runtime. In our derivation for the $\bigo{\alpha}$ and $\bigo{\alpha^2}$ terms we relied on our eigenvalues being I.I.D Gaussian variables, with the first and second order expressions containing factors with the first and second moments respectively of the Gaussian distribution. This would suggest that the third order term in a weak coupling expansion might also be 0, similarly to the first order term. This would lead to a supposed remainder error of $\bigo{\alpha^4 t^4}$, which after balancing with the off-resonance error would give $\alpha = \bigo{1/t^2}$. If the number of interactions then scales like $\bigo{1/\alpha^2 t^2}$, which is consistent with the spectral gap of $\TT_{\on}$ scaling as $\bigo{\alpha^2 t^2}$, then to make the total error of order $\bigo{\epsilon}$ we would require $t \in \bigotilde{1/\epsilon^{0.5}}$ as in Theorems \ref{thm:single_qubit} and \ref{thm:harmonic_oscillator}. This conjecture then leads to a total simulation time of order $\bigo{1/\epsilon^{1.5}}$. 
-
-An even further conjecture would be to keep $\alpha \cdot t$ as a small constant, in this case we are essentially saying that the randomized dynamics $e^{i \alpha t G}$ are beneficial and should not be thought of as some remainder error to be minimized. If the $\alpha t$ constant is small enough then the dynamics will still be approximated by the Markov chain $\TT_{on}$. Our spectral gap will still scale as $\bigo{(\alpha t)^2}$ and $t$ as $\bigo{1/\epsilon^{0.5}}$. This would lead to our total simulation time scaling as $\bigo{1/\epsilon^{0.5}}$. In Figure \ref{fig:epsilon_scaling} we numerically explore these various scalings of $\alpha$ for the harmonic oscillator with $\beta = \dim_S = 4$. Our first remark is that the $\alpha = \bigo{1/t^3}$ scaling as dictated by Theorem \ref{thm:harmonic_oscillator} is numerically supported. 
- Specifically, the theorem suggests that we should observe $O(1/\epsilon^{2.5})$ scaling for $L\cdot t$. 
- Our experiment suggesting $L \cdot t \in \bigo{1/\epsilon^{2.764}}$ which is approximately consistent and deviations from this scaling may arise from the inclusion of data in the fit from outside of the weak coupling limit which is the only regime where we anticipate this scaling. 
- 
- We obtained these exponents via least squares fitting of a power-law fit to $L\cdot t$ and $1/\epsilon$. 
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.66\linewidth]{tsp_numerics/data/epsilon_fitting_4.pdf}
-    \caption{Scaling of $L \cdot t$ to prepare a harmonic oscillator thermal state with $\beta = \dim_S = 4$ with respect to $1/\epsilon$ in a log-log plot. For each line in the plot we scaled $\alpha$ by a constant value to make $\widetilde{\alpha}^2 \approx 0.05$ for the largest value of $\epsilon$. Each of these slopes is consistently larger by 0.25-0.27 compared to stated predictions.}
-    \label{fig:epsilon_scaling}
-\end{figure}
-
-
 \section{General Systems} \label{sec:general_systems}
 
 We now extend our thermalization techniques to arbitrary Hamiltonians with no degenerate eigenvalues. The first major difficulty that we run into is how to choose our environment gap $\gamma$. If one does not have any knowledge whatsoever about where the eigenvalues of $H_S$ may lie then we are reduced to uniform guessing. In Section \ref{sec:zero_knowledge} we show that even in this scenario the thermal state is an approximate fixed point for finite $\beta$ and the exact fixed point for ground states and we provide a bound on the total simulation time required. However, we show that this generality does come at a cost. If one has complete knowledge of the eigenvalue differences we show in Section \ref{sec:perfect_knowledge} that the total simulation time markedly decreases. Further, with complete knowledge the thermal state is an exact fixed point for all $\beta$. Finally, in Section \ref{sec:general_numerics} we study these impacts on small Hydrogen chain systems and observe the quantitative effects of noise added to $\gamma$. 
@@ -995,49 +936,6 @@ For $i = 1$ as we know the ground state is fixed we have $\lim_{\beta \to \infty
 \end{proof}
 
 The above theorem shows that if we sample our transitions strategically rather than randomly then we can achieve much faster convergence to the groundstates in our upper bounds.  Importantly, the scaling of the total simulation time is also independent of the norm of $H_S$ in this case, whereas the time required by the zero knowledge case does.  Unfortunately, the dimensional scaling of ${\rm dim}_S^16$ is prohibitive for all but the smallest dimensional systems.  This scaling is again likely loose because of a number of assumptions that we make above and also a result of our insistence that the channel always operate inside the regime of weak coupling.  In contrast, we will see below that equilibration can be much faster if strong coupling is assumed.  Finally, it is worth noting that although perfect knowledge is assumed, a cooling schedule is not used.  By changing the distribution depending on the temperature of the Gibbs state it is possible that even better scaling may be achievable.
-
-\subsection{Hydrogen Chain Numerics} \label{sec:general_numerics}
-
-The analytic results developed in the previous two sections provide strong guarantees on the correctness of our routine for most quantum systems, however the bounds on the total simulation are fairly high degree polynomials in the parameters of interest. One crucial interpretation of the two different results is that knowledge of the eigenvalue differences of $H_S$ can lead to significantly better simulation time bounds, but this knowledge is not \emph{crucial} for thermalization. Another important takeaway is that we cannot bound the simulation time or number of interactions required for finite $\beta$ as we cannot bound the spectral gap of the expected transition matrix $\EE_\gamma T_\gamma$. The purpose of this section is to investigate these two theoretic takeaways numerically with small Hydrogen chain systems. These systems are some of the smallest chemical systems that still display some real-world chemical behavior, and as a result are typically used in many numeric benchmarks for quantum routines. 
-
-Our first experiment conducted is to study the effects of changing $\alpha$ and $t$ on the trace distance error as a function of $L$. The theory developed in prior sections is very prescriptive; to reach a specific trace distance of $\epsilon$ all of our theorems give a value of $\alpha$, $L$, and $t$ that guarantee a distance of at most $\bigotilde{\epsilon}$ but say nothing about what this convergence looks like. In Figure \ref{fig:h_chain_error} we study the effects of different choices of $\alpha$ and $t$ on this convergence rate. To generate the Hamiltonians used in these experiments we created a small chain of equally spaced hydrogen nuclei with an STO-3G active space for the electrons. Hamiltonian creation was done with OpenFermion \cite{mcclean2020openfermion} and PySCF \cite{pyscf}. Once the Hamiltonians were generated, the distance to the thermal state $\rho_S(\beta)$ for each was tracked over $L = 5000$ interactions. For both Hydrogen 2 and Hydrogen 3 we chose $\beta = 4$ for consistency, this gave a ground state overlap of around 0.56 for Hydrogen 2 and 0.26 for Hydrogen 3. 
-
-\begin{figure}
-\centering
-    \centering
-    \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width = \textwidth]{tsp_numerics/data/error_vs_interaction_h2_chain_1.pdf}    
-        \caption{Hydrogen 2 }\label{fig:h2_error}
-    \end{subfigure}    
-    \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width=\textwidth]{tsp_numerics/data/error_vs_interaction_h3_chain_3.pdf}
-        \caption{Hydrogen 3 }\label{fig:h3_error}
-    \end{subfigure} 
-    \caption{These plots show the distance to the target thermal state for Hydrogen 2 and Hydrogen 3 chains as the number of interactions $L$ increases. For both Hydrogen 2 and 3 we set $\beta = 4.0$, which gives a ground state overlap of greater than 0.5 for Hydrogen 2 and 0.25 for Hydrogen 3. $\gamma$ for both \ref{fig:h2_error} and \ref{fig:h3_error} was generated by placing a Gaussian at the average energy $\trace{H_S} / \dim_S$ with a width of $\norm{H_S} / 2$. We note that a variety of $\widetilde{\alpha}^2$ values were chosen to demonstrate the faster convergence, but higher error, of strong coupling.
-    }
-    \label{fig:h_chain_error}
-\end{figure}
-
-There are a few key takeaways from Figure \ref{fig:h_chain_error}. The first is that we observe increasing $\alpha$ and $t$ tend to increase the convergence rate, with $\alpha$ visuallly appearing more important. At higher values of $\alpha$ changes in $t$ appear to make less of an impact on the error. We also observe that our channel is seemingly robust beyond our weak-interaction analysis. For values of $\widetilde{\alpha}^2$, the weak-interaction expansion parameter, we observe that values as high as $\widetilde{\alpha}^2 \approx 3$ can have rapid convergence to fairly low error floors. We note that these coupling values that go beyond weak-interaction seem to lead to faster convergence of the dynamics at the cost of a larger error floor. It remains an open question if dynamic choices of $\alpha$ and $t$ could lead to better performance of the overall routine, one could use very large $\widetilde{\alpha}$ initially to quickly thermalize with large error and then decrease $\widetilde{\alpha}$ to fine-tune the final state.
-
-The second observation we make is on the choice of the environment gaps $\gamma$. For both Hydrogen 2 and 3 we selected $\gamma $ randomly from a Gaussian with mean $\trace{H_S} / \dim_S$ and standard deviation of $\norm{H_S} / 2$. This choice of $\gamma$ is completely heuristic and was intended to have a large overlap with what the typical eigenvalue differences may look like with a large enough deviation to pick up potentially large differences. Although this heuristic works well enough to show convergence, it leads us to question if the error convergence or floors can be improved with better choices of $\gamma$. 
-
-In Figure \ref{fig:h_chain_noise} we demonstrate that better choices of $\gamma$ do in fact reduce the total simulation time needed for thermalization. In Figures \ref{fig:h2_chain_with_noise} and \ref{fig:h3_chain_with_noise} we compute the number of interactions needed at a fixed coupling constant $\alpha$ and a fixed time $t$ as a function of the noise added to our samples for $\gamma$. We generate one sample of $\gamma$ by first computing the eigenvalue spectrum of H2 or H3 exactly, then by choosing two non-equal eigenvalues, and finally sampling a Gaussian centered at the absolute value of the difference. The width of this Gaussian then serves as a proxy for the amount of knowledge one may have about the system's eigenvalues. We plot the total simulation time with respect to this width as it varies from 0 to the spectral width $\max_i \lambda_S(i) - \min_j \lambda_S(j)$. The results align well with our theoretic analysis: having knowledge of the eigenvalues of the system can be used to speed up the thermalization routine but if one does not have any knowledge at all the thermal state can still be prepared. It is an open question if the dependence of the total simulation time $L \cdot t$ on the noise level $\sigma$ can be determined analytically.
- \begin{figure}
-     \centering
-        \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width = \textwidth]{tsp_numerics/h2_chain_with_noise_3.pdf}    
-        \caption{Hydrogen 2 } \label{fig:h2_chain_with_noise}
-    \end{subfigure}    
-    \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width=\textwidth]{tsp_numerics/h3_chain_with_noise_3.pdf}
-        \caption{Hydrogen 3 }\label{fig:h3_chain_with_noise}
-    \end{subfigure} 
-     \caption{ In these plots the amount of total simulation time needed to prepare a $\beta = 2.0$ thermal state with $\alpha = 0.01$ and $t = 500$ is tracked as a function of the noise added to samples of $\gamma$. A sample for $\gamma$ is generated by choosing two non-equal eigenvalues from the system spectrum and adding a Gaussian random variable with standard deviation $\sigma$. For each value of $\sigma$ the resulting state needs to have an average trace distance of less than $0.05$ for 100 samples.}
-     \label{fig:h_chain_noise}
- \end{figure}
-
-
 
 
 \section{Conclusion} \label{sec:conclusion}
