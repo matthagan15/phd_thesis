@@ -54,6 +54,44 @@
       \verb https://doi.org/10.1145/780542.780546
       \endverb
     \endentry
+    \entry{moreIsDifferent}{article}{}
+      \name{author}{1}{}{%
+        {{hash=847b0698d138c139548ed0a7422a6a16}{%
+           family={Anderson},
+           familyi={A\bibinitperiod},
+           given={P.\bibnamedelimi W.},
+           giveni={P\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{847b0698d138c139548ed0a7422a6a16}
+      \strng{fullhash}{847b0698d138c139548ed0a7422a6a16}
+      \strng{bibnamehash}{847b0698d138c139548ed0a7422a6a16}
+      \strng{authorbibnamehash}{847b0698d138c139548ed0a7422a6a16}
+      \strng{authornamehash}{847b0698d138c139548ed0a7422a6a16}
+      \strng{authorfullhash}{847b0698d138c139548ed0a7422a6a16}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{4047}
+      \field{title}{More Is Different}
+      \field{volume}{177}
+      \field{year}{1972}
+      \field{pages}{393\bibrangedash 396}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1126/science.177.4047.393
+      \endverb
+      \verb{eprint}
+      \verb https://www.science.org/doi/pdf/10.1126/science.177.4047.393
+      \endverb
+      \verb{urlraw}
+      \verb https://www.science.org/doi/abs/10.1126/science.177.4047.393
+      \endverb
+      \verb{url}
+      \verb https://www.science.org/doi/abs/10.1126/science.177.4047.393
+      \endverb
+    \endentry
     \entry{anshu_sample-efficient_2021}{article}{}
       \name{author}{4}{}{%
         {{hash=bc47228a2e33549728eb4b07e94f9c86}{%
