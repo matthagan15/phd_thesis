@@ -7,3 +7,7 @@ main.syn*
 main.pdf
 tsp_numerics/target
 tmp
+main.bcf
+main.lof
+main.lot
+main.out
