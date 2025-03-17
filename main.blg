@@ -1,34 +1,34 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'main.blg'
-[64] biber-darwin:340> INFO - === Wed Mar 12, 2025, 14:18:18
-[77] Biber.pm:418> INFO - Reading 'main.bcf'
-[198] Biber.pm:972> INFO - Found 81 citekeys in bib section 0
-[211] Biber.pm:4383> INFO - Processing section 0
-[220] Biber.pm:4574> INFO - Looking for bibtex file 'main.bib' for section 0
-[227] bibtex.pm:1713> INFO - LaTeX decoding ...
-[380] bibtex.pm:1518> INFO - Found BibTeX data source 'main.bib'
-[816] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[816] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[816] Biber.pm:4203> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[816] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[883] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[935] bbl.pm:757> INFO - Output to main.bbl
-[935] Biber.pm:130> WARN - legacy month field 'Apr' in entry 'babbush2019quantum' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Nov' in entry 'su2021fault' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Dec' in entry 'o2021efficient' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Mar' in entry 'berry2015simulating' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Aug' in entry 'qdriftCampbell' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'jan' in entry 'wiebe2010higher' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Feb' in entry 'childs2021theory' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Aug' in entry 'bucket_sim' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'feb' in entry 'sparsto' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Mar' in entry 'babbush2018low' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'oct' in entry 'Chen_2021' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'tensorHypercontraction' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'May' in entry 'mpemba' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'nickMpemba' is not an integer - this will probably not sort properly.
-[935] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'brandao2021complexity' is not an integer - this will probably not sort properly.
-[936] Biber.pm:130> WARN - BibTeX subsystem: /var/folders/pw/lw094gdn2rqcdsph01syw6nh0000gn/T/biber_tmp_YOZS/3b92c3a43883b50258e417775889aed6_81063.utf8, line 4, warning: 69 characters of junk seen at toplevel
-[936] Biber.pm:130> WARN - BibTeX subsystem: /var/folders/pw/lw094gdn2rqcdsph01syw6nh0000gn/T/biber_tmp_YOZS/3b92c3a43883b50258e417775889aed6_81063.utf8, line 1046, warning: 231 characters of junk seen at toplevel
-[936] Biber.pm:130> WARN - I didn't find a database entry for 'qdrift' (section 0)
-[936] Biber.pm:132> INFO - WARNINGS: 18
+[71] biber-darwin:340> INFO - === Mon Mar 17, 2025, 18:05:58
+[86] Biber.pm:418> INFO - Reading 'main.bcf'
+[211] Biber.pm:972> INFO - Found 81 citekeys in bib section 0
+[226] Biber.pm:4383> INFO - Processing section 0
+[236] Biber.pm:4574> INFO - Looking for bibtex file 'main.bib' for section 0
+[244] bibtex.pm:1713> INFO - LaTeX decoding ...
+[403] bibtex.pm:1518> INFO - Found BibTeX data source 'main.bib'
+[892] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[892] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[892] Biber.pm:4203> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[892] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[962] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[1014] bbl.pm:757> INFO - Output to main.bbl
+[1014] Biber.pm:130> WARN - legacy month field 'Apr' in entry 'babbush2019quantum' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Nov' in entry 'su2021fault' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Dec' in entry 'o2021efficient' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Mar' in entry 'berry2015simulating' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Aug' in entry 'qdriftCampbell' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'jan' in entry 'wiebe2010higher' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Feb' in entry 'childs2021theory' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Aug' in entry 'bucket_sim' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'feb' in entry 'sparsto' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Mar' in entry 'babbush2018low' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'oct' in entry 'Chen_2021' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'tensorHypercontraction' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'May' in entry 'mpemba' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'nickMpemba' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - legacy month field 'Jul' in entry 'brandao2021complexity' is not an integer - this will probably not sort properly.
+[1014] Biber.pm:130> WARN - BibTeX subsystem: /var/folders/pw/lw094gdn2rqcdsph01syw6nh0000gn/T/biber_tmp_zz5O/3b92c3a43883b50258e417775889aed6_12756.utf8, line 4, warning: 69 characters of junk seen at toplevel
+[1014] Biber.pm:130> WARN - BibTeX subsystem: /var/folders/pw/lw094gdn2rqcdsph01syw6nh0000gn/T/biber_tmp_zz5O/3b92c3a43883b50258e417775889aed6_12756.utf8, line 1046, warning: 231 characters of junk seen at toplevel
+[1014] Biber.pm:130> WARN - I didn't find a database entry for 'qdrift' (section 0)
+[1014] Biber.pm:132> INFO - WARNINGS: 18
