@@ -32,6 +32,7 @@
 \usepackage{physics}
 \usepackage{comment}
 \usepackage[normalem]{ulem}
+\usepackage{qcircuit}
 
 
 \newtheorem{theorem}{Theorem}
@@ -52,7 +53,7 @@
 
 % author data
 \author{Matthew Hagan}
-\title{Babies first PhD Thesis}
+\title{Preparing Thermal States on a Digital Quantum Computer}
 \degree{Doctor of Philosophy}
 \department[]{Department of Physics}
 \gradyear{2025}
@@ -62,7 +63,7 @@
   \frontmatter
     \maketitle
     \begin{abstract}
-      abstract state of mind
+      This thesis is a relatively self contained guide for preparing thermal states of the form $\rho(\beta) = \frac{e^{-\beta H}}{\mathcal{Z}}$ for arbitrary systems at arbitrary $\beta \in [0, \infty]$ on a digital quantum computer. This resulting algorithm uses only one ancilla qubit, not including the qubits necessary for magic state distillation, which is optimal. We will assume only basic familiarity with notions in quantum computing, such as Pauli matrices, trace norms, and unitary evolution. We will develop this algorithm from the ground up: starting from first order Trotter-Suzuki formulas, then introducing randomized product formulas, showing how these two can be combined in a single composite product formula, then demonstrating how to use these time evolution operators to prepare thermal states, and finally we benchmark the performance of these algorithms down to the constant factors with plentiful numerics. 
     \end{abstract}
     \begin{dedication}
       To my sister Veronica.

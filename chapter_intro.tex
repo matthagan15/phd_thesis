@@ -25,9 +25,54 @@ Quantum mechanics starts with the notion of a Hilbert space. Oftentimes problems
 \end{equation}
 For the rest of this thesis $\hbar = 1$. 
 
-Our use of qubit Hilbert spaces gives us access to the Pauli operators $I_i, X_i, Y_i, Z_i$ for each qubit $i$, which we can then string together to form a Pauli string, here is an example on 4 qubits $P = X_1 \otimes I_2 \otimes Y_3 \otimes Z_4$. Typically we will drop the tensor product symbol $\otimes$ and drop the identity factors, so the previous example will be written as $P = X_1 Y_3 Z_4$. A useful fact about Pauli operators is that they can be exponentiated fairly easily due to the identity $e^{i \theta P} = \cos(\theta) I + i \sin(\theta) P$.
+Our use of qubit Hilbert spaces gives us access to the Pauli operators $I_i, X_i, Y_i, Z_i$ for each qubit $i$, which we can then string together to form a Pauli string, here is an example on 4 qubits $P = X_1 \otimes I_2 \otimes Y_3 \otimes Z_4$. Typically we will drop the tensor product symbol $\otimes$ and drop the identity factors, so the previous example will be written as $P = X_1 Y_3 Z_4$. A useful fact about Pauli operators is that they can be exponentiated fairly easily due to the identity $e^{i \theta P} = \cos(\theta) I + i \sin(\theta) P$. We now will show how these rotations can be implemented given only single qubit rotations and CNOT gates. Here is a basic example of how to do a two qubit rotation $e^{i \theta Z \otimes Z}$.
+\begin{table}[h]
+    \[
+    \begin{array}{c c c} 
+        \Qcircuit @C=1em @R=.7em {
+            & \ctrl{2} & \qw      & \qw                & \qw      & \ctrl{2} & \qw \\
+            & \qw      & \ctrl{1} & \qw                & \ctrl{1} & \qw      & \qw\\
+            & \targ    & \targ    & \gate{R_Z(2 \theta)} & \targ    & \targ    & \qw
+        } &  = & \Qcircuit @C=1em @R = 0.7em {
+             & \gate{e^{i \theta Z_1 Z_2}} & \qw
+        }
+    \end{array}
+    \]
+    \caption{$Z_1 Z_2$ rotation.}
+\end{table}
+This is a slightly abstracted circuit, as arbitrary angle $Z$ rotations are not typical circuits that real quantum computers can do. To further compile this, one would need to decompose the single qubit $Z$ rotation into some universal gate set, typically Clifford + T, using an algorithm such as the Ross-Sellinger single qubit rotation algorithm. For this thesis we will assume access to single qubit rotations and CNOT gates as our universal gate set. 
+
+To extend this to arbitary $n$ qubit Paulis with possibly $X$ or $Y$ Paulis as well we can repeat the same circuit but with a change of basis. With the basic circuit identities that $X = H Z H$ and $Y = S Z S^\dagger$. We can then change basis from the computation basis states to those of the Pauli we are interested in, do the computation in the $Z$ basis, and then change back to the computation basis. For instance, here is how we could do the rotation $e^{i X_1 Y_2 Z_3 \theta}$
+\begin{table}[h]
+\[
+\begin{array}{c}
+    \Qcircuit @C=1em @R=0.8em {
+        & \gate{H} & \ctrl{3} & \qw & \qw & \qw & \qw & \qw & \ctrl{3} & \gate{H} \\
+        & \gate{S^\dagger} & \qw & \ctrl{2} & \qw & \qw & \qw & \ctrl{2} & \qw & \gate{S} \\
+        & \gate{I} &\qw & \qw & \ctrl{1} & \qw & \ctrl{1} & \qw & \qw & \gate{I} \\
+        \lstick{\ket{0}} & \qw & \targ & \targ & \targ & \gate{R_Z(2\theta)} & \targ & \targ & \targ & \qw 
+    }
+\end{array}
+\]
+\caption{Mixed Pauli rotations}
+\end{table}
+\todo{Lemmize this}
+
+Now we will show how to build the simplest product formula: a first order Trotter decomposition. 
+Let $H = \sum_{i = 1}^{L} h_i H_i$, where $H_i$ is a Pauli string. Our goal is to prove the following
+\begin{equation}
+    U_{\rm TS}^{(1)}(t) \coloneqq e^{i h_1 H_1 t}e^{i h_2 H_2 t} \ldots e^{i h_L H_L t} 
+\end{equation}
+and then eventually we want to prove the second order Trotter formula
+\begin{equation}
+    U_{\rm TS}^{(2)} = e^{i h_1 H_1 t/2} e^{i h_2 H_2 t/2} \ldots e^{i h_L H_L t / 2} e^{i h_L H_L t / 2} \ldots e^{i h_2 H_2 t/2} e^{i h_1 H_1 t/2}
+\end{equation}
 
 
+The next thing we have to discuss is the QDrift Channel. This channel is a randomized product formula, meaning that instead of visiting the terms in the Hamiltonian one by one, we will randomly choose a term from the Hamiltonian and simulate it. By repeating this process we can approximate the overall time evolution channel. As we are implementing a probabilistic application of a unitary time evolution we need to represent the algorithm as a quantum channel acting on density matrices
+\begin{equation}
+    \mathcal{U}_{\rm QD}(\rho; t) \coloneqq \sum_{i = 1}^L \frac{h_i}{\norm{h}} e^{-i H_i \tau} \rho e^{+i H_i \tau}.
+\end{equation}
 
 % Q: What is this thesis about!??@!??! Answer this with one sentence. Then extend to a paragraph. 
 
