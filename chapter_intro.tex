@@ -58,6 +58,14 @@ To extend this to arbitary $n$ qubit Paulis with possibly $X$ or $Y$ Paulis as w
 \end{table}
 \todo{Lemmize this}
 
+We will now collect these basic observations, along with an optimization that eliminates the ancilla qubit, in the following lemma.
+\begin{lemma}
+    Let $P$ be an $n$ qubit Pauli operator and $U_P$ the change of basis unitary from a product of $Z$ operators, i.e 
+    \begin{equation}
+        P = U_P Z_1^{p_1} Z_2^{p_2} \ldots Z_n^{p_n} U_P^\dagger
+    \end{equation}
+\end{lemma}
+
 Now we will show how to build the simplest product formula: a first order Trotter decomposition. 
 Let $H = \sum_{i = 1}^{L} h_i H_i$, where $H_i$ is a Pauli string. Our goal is to prove the following
 \begin{equation}
