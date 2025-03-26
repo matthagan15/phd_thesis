@@ -62,9 +62,35 @@ We will now collect these basic observations, along with an optimization that el
 \begin{lemma}
     Let $P$ be an $n$ qubit Pauli operator and $U_P$ the change of basis unitary from a product of $Z$ operators, i.e 
     \begin{equation}
-        P = U_P Z_1^{p_1} Z_2^{p_2} \ldots Z_n^{p_n} U_P^\dagger
+        P = U_P \left(Z_1^{p_1} Z_2^{p_2} \ldots Z_n^{p_n} \right) U_P^\dagger,
     \end{equation}
+    where each power $p_i$ is 0 or 1. The support of $P$, or the qubits in which $P$ acts nontrivially on, is denoted ${\rm supp}(P)$ and is the set of nonzero $p_i$. We denote the cardinality $|{\rm supp}(P)| = w$, as it is typically referred to as the weight of $P$, and let $s$ denote the largest index in supp$(P)$. The time evolution operator $e^{i P t}$ can be performed with $2(w-1)$ CNOT gates and one single qubit $Z$ rotation via the following identity
+    \begin{equation}
+        e^{i P t} = U_P \left(\prod_{i \in {\rm supp}(P) \setminus s} {\rm CNOT}(i, s) R_{Z_s}(t) \prod_{i \in {\rm supp}(P) \setminus s} {\rm CNOT}(i, s) \right) U_P^\dagger.
+    \end{equation}
+    This construction uses no additional ancilla qubits.
 \end{lemma}
+\begin{proof}
+    We first note that 
+    \begin{equation}
+        e^{i P t} = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} P^k = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} (U_P \prod_i Z_i^{p_i} U_P^\dagger)^k = U_P \left(\sum_{k = 0}^\infty \frac{(i t)^k}{k!} ( \prod_i Z_i^{p_i})^k \right) U_P^\dagger = U_P e^{i \prod_i Z_i^{p_i} t} U_P^\dagger.
+    \end{equation}
+    This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations.
+    Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Consider a basis state $\ket{a} = \ket{a_1}\ket{a_2}\ldots \ket{a_n}$, where each $a_i$ is 0 or 1. As CNOT$(1,2) \ket{b}\ket{c} = \ket{b} \ket{b \oplus c}$, where $b \oplus c$ is the addition of $b$ and $c$ mod 2, we have that the product
+    \begin{equation}
+        \prod_{i = 1}^{n - 1} {\rm CNOT}(i, n) \ket{a} = \ket{a_1} \ldots \ket{a_{n-1}} \ket{a_1 \oplus a_2 \oplus \ldots \oplus a_n}
+    \end{equation}
+    stores the parity of the entire basis state in the last qubit. Applying a $Z$ rotation on the last qubit then yields the following
+    \begin{align}
+        \left(\identity^{\otimes n - 1} \otimes R_Z(t)\right) \ket{a_1} \ldots \ket{a_{n-1}} &= \ket{a_1} \ldots \ket{a_{n- 1}} R_Z(t) \ket{a_1 \oplus \ldots \oplus a_n} \\
+        &= \ket{a_1} \ldots \ket{a_{n- 1}} \left(e^{i Z_n t} \ket{a_1 \oplus \ldots \oplus a_n} \right) \\
+        &= e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_1 \oplus \ldots \oplus a_n}.
+    \end{align}
+    Performing the same sequence of CNOT gates in reverse then ``uncomputes'' the parity:
+    \begin{align}
+        \prod_{i = n- 1}^{1} {\rm CNOT}(i, n) e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_1 \oplus \ldots \oplus a_n} &= e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_n}
+    \end{align}
+\end{proof}
 
 Now we will show how to build the simplest product formula: a first order Trotter decomposition. 
 Let $H = \sum_{i = 1}^{L} h_i H_i$, where $H_i$ is a Pauli string. Our goal is to prove the following
