@@ -1,8 +1,6 @@
 \chapter{Introduction}
 
-
 \section{Motivation}
-\textbf{Attempt 2}
 
 In everyday life we interact with temperature on an intuitive sense: hot objects cool down, refrigerators consume energy to keep things cold, and the winters here in Toronto suck all possible heat out of every living thing. We typically don't think too much about how these systems equilibrate, we now that there are convection currents in liquids that transport heat, that solids, metals in particular, conduct heat naturally and that radiation can transmit heat, which occurs in microwaves and from sunlight. If you are cooking a roast and want to know if it's done, you just stick the thermometer in and wait a few seconds for it to equilibrate. You don't need for the thermometer to meet some kind of interaction model between the thermometer and the food, it just equilibrates given enough time. 
 
@@ -59,14 +57,14 @@ To extend this to arbitary $n$ qubit Paulis with possibly $X$ or $Y$ Paulis as w
 \todo{Lemmize this}
 
 We will now collect these basic observations, along with an optimization that eliminates the ancilla qubit, in the following lemma.
-\begin{lemma}
+\begin{lemma} \label{lem:pauli_rotations}
     Let $P$ be an $n$ qubit Pauli operator and $U_P$ the change of basis unitary from a product of $Z$ operators, i.e 
     \begin{equation}
         P = U_P \left(Z_1^{p_1} Z_2^{p_2} \ldots Z_n^{p_n} \right) U_P^\dagger,
     \end{equation}
-    where each power $p_i$ is 0 or 1. The support of $P$, or the qubits in which $P$ acts nontrivially on, is denoted ${\rm supp}(P)$ and is the set of nonzero $p_i$. We denote the cardinality $|{\rm supp}(P)| = w$, as it is typically referred to as the weight of $P$, and let $s$ denote the largest index in supp$(P)$. The time evolution operator $e^{i P t}$ can be performed with $2(w-1)$ CNOT gates and one single qubit $Z$ rotation via the following identity
+    where each power $p_i$ is 0 or 1. The support of $P$, or the qubits in which $P$ acts nontrivially on, is denoted ${\rm supp}(P)$ and is the set of nonzero $p_i$. We denote the cardinality $|{\rm supp}(P)| = w$, as it is typically referred to as the weight of $P$, and let $s_w$ denote the largest index in supp$(P)$. The time evolution operator $e^{i P t}$ can be performed with $2(w-1)$ CNOT gates and one single qubit $Z$ rotation via the following identity
     \begin{equation}
-        e^{i P t} = U_P \left(\prod_{i \in {\rm supp}(P) \setminus s} {\rm CNOT}(i, s) R_{Z_s}(t) \prod_{i \in {\rm supp}(P) \setminus s} {\rm CNOT}(i, s) \right) U_P^\dagger.
+        e^{i P t} = U_P \left(\prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) R_{Z_{s_w}}(t) \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) \right) U_P^\dagger.
     \end{equation}
     This construction uses no additional ancilla qubits.
 \end{lemma}
@@ -75,23 +73,35 @@ We will now collect these basic observations, along with an optimization that el
     \begin{equation}
         e^{i P t} = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} P^k = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} (U_P \prod_i Z_i^{p_i} U_P^\dagger)^k = U_P \left(\sum_{k = 0}^\infty \frac{(i t)^k}{k!} ( \prod_i Z_i^{p_i})^k \right) U_P^\dagger = U_P e^{i \prod_i Z_i^{p_i} t} U_P^\dagger.
     \end{equation}
-    This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations.
-    Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Consider a basis state $\ket{a} = \ket{a_1}\ket{a_2}\ldots \ket{a_n}$, where each $a_i$ is 0 or 1. As CNOT$(1,2) \ket{b}\ket{c} = \ket{b} \ket{b \oplus c}$, where $b \oplus c$ is the addition of $b$ and $c$ mod 2, we have that the product
+    This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations. We now need to show that the CNOT sequence and single qubit $Z$ rotation perform arbitrary tensor product $Z$ rotations. Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Consider a basis state $\ket{a} = \ket{a_1}\ket{a_2}\ldots \ket{a_n}$, where each $a_i$ is 0 or 1. Let $\ket{s} = \ket{s_1} \ket{s_2} \ldots \ket{s_w}$ denote the basis states $a_i$ that are in the support of $P$. As CNOT$(1,2) \ket{b}\ket{c} = \ket{b} \ket{b \oplus c}$, where $b \oplus c$ is the addition of $b$ and $c$ mod 2, we have that the product
     \begin{equation}
-        \prod_{i = 1}^{n - 1} {\rm CNOT}(i, n) \ket{a} = \ket{a_1} \ldots \ket{a_{n-1}} \ket{a_1 \oplus a_2 \oplus \ldots \oplus a_n}
+        \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) \ket{s} = \ket{s_1} \ldots \ket{s_{w-1}} \ket{s_1 \oplus s_2 \oplus \ldots \oplus s_w}
     \end{equation}
     stores the parity of the entire basis state in the last qubit. Applying a $Z$ rotation on the last qubit then yields the following
     \begin{align}
-        \left(\identity^{\otimes n - 1} \otimes R_Z(t)\right) \ket{a_1} \ldots \ket{a_{n-1}} &= \ket{a_1} \ldots \ket{a_{n- 1}} R_Z(t) \ket{a_1 \oplus \ldots \oplus a_n} \\
-        &= \ket{a_1} \ldots \ket{a_{n- 1}} \left(e^{i Z_n t} \ket{a_1 \oplus \ldots \oplus a_n} \right) \\
-        &= e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_1 \oplus \ldots \oplus a_n}.
+        R_{Z_{s_w}}(t) \ket{s_1} \ldots \ket{s_{w-1}} &= \ket{s_1} \ldots \ket{s_{w- 1}} \left(R_Z(t) \ket{s_1 \oplus \ldots \oplus s_w} \right) \\
+        &= e^{i \bigoplus_{i = 1}^w s_i t} \ket{s_1} \ldots \ket{s_{w- 1}} \ket{s_1 \oplus \ldots \oplus s_w}.
     \end{align}
-    Performing the same sequence of CNOT gates in reverse then ``uncomputes'' the parity:
+    Performing the same sequence of CNOT gates in reverse then ``uncomputes'' the parity
     \begin{align}
-        \prod_{i = n- 1}^{1} {\rm CNOT}(i, n) e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_1 \oplus \ldots \oplus a_n} &= e^{i \bigoplus_{i = 1}^n a_i t} \ket{a_1} \ldots \ket{a_{n- 1}} \ket{a_n}
+        \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) e^{i \bigoplus_{i = 1}^w s_i t} \ket{s_1} \ldots \ket{s_{w- 1}} \ket{s_1 \oplus \ldots \oplus s_w} &= e^{i \bigoplus_{i = 1}^w s_i t} \ket{s_1} \ldots \ket{s_{w- 1}} \ket{s_w}.
     \end{align}
+    As the circuit performs as desired on an arbitrary basis state, by linearity it extends to an arbitrary superposition.
+
+    Since we just showed that 
+    \begin{equation}
+    \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) R_{Z_{s_w}}(t) \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) = e^{i \prod_i Z_i^{p_i} t}
+    \end{equation}
+    and the change of basis unitary $U_P$ from the $P$ basis to the computational $Z$ basis consist solely of tensor products of $H$ and $S$ we have therefore shown that $e^{i P t}$ can be implemented using single qubit unitaries and CNOT gates with no ancilla qubits.
 \end{proof}
 
+Lemma \ref{lem:pauli_rotations} serves as the basis for a class of simulation algorithms known as Pauli formulas.
+We will introduce and prove two techniques for time-independent Hamiltonian simulation in this section, namely Trotter formulas and the randomized channel QDRIFT, as they serve as the basis for the optimizations that we introduce later in Chapter \ref{ch:composite_sims}. The first order Trotter formula was the first simulation algorithm and was developed by Lloyd \cite{lloyd1996universal}. The advantages of this algorithm is that it is straightforward, easy to implement, and requires no ancilla qubits. The downside is that analytically our bounds on the runtime of the algorithm scale as $O\left( L \frac{t^2}{\epsilon}\right)$ for the first order formula, which is significantly worse than the lower bound of $\Omega\left(t + \log \frac{1}{\epsilon} \right)$. This spurred the development of more sophisticated techniques for the Hamiltonian simulation problem, many of which require a different input model, namely a block-encoding, for the Hamiltonian than the Pauli decomposition we consider, leading to asymptotically optimal algorithms \cite{low2019hamiltonian} that utilize only a single additional ancilla qubit. However, many practitioners observed that in practice Trotter algorithms tended to drastically outperform their worst case analyses. The analysis of product formulas was improved to account for the commutation structure of the Hamiltonian in \cite{childs2021theory} and was shown to be superior to analytically ``optimal'' techniques for certain Hamiltonians. Recently improved analysis of Trotter formulas showed that entanglement can improve these error estimates, so progress is still being made in undestanding the performance of Trotter nearly 30 years later. 
+
+The second method we will 
+
+
+The first two methods we introduce are the first and second order Trotter formulas, which are also chronologically the first methods developed \cite{lloyd1996universal}. These are deterministic methods that simulate a Hamiltonian $H = \sum_{i = 1}^L h_i H_i$, where for simplicity we have pulled out the 
 Now we will show how to build the simplest product formula: a first order Trotter decomposition. 
 Let $H = \sum_{i = 1}^{L} h_i H_i$, where $H_i$ is a Pauli string. Our goal is to prove the following
 \begin{equation}

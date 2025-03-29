@@ -1918,6 +1918,35 @@
       \field{volume}{107}
       \field{year}{2017}
     \endentry
+    \entry{lloyd1996universal}{article}{}
+      \name{author}{1}{}{%
+        {{hash=501c0933970931f080455b29b43e560d}{%
+           family={Lloyd},
+           familyi={L\bibinitperiod},
+           given={Seth},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Association for the Advancement of Science}%
+      }
+      \strng{namehash}{501c0933970931f080455b29b43e560d}
+      \strng{fullhash}{501c0933970931f080455b29b43e560d}
+      \strng{bibnamehash}{501c0933970931f080455b29b43e560d}
+      \strng{authorbibnamehash}{501c0933970931f080455b29b43e560d}
+      \strng{authornamehash}{501c0933970931f080455b29b43e560d}
+      \strng{authorfullhash}{501c0933970931f080455b29b43e560d}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{5278}
+      \field{title}{Universal quantum simulators}
+      \field{volume}{273}
+      \field{year}{1996}
+      \field{pages}{1073\bibrangedash 1078}
+      \range{pages}{6}
+    \endentry
     \entry{signProblemOG}{article}{}
       \name{author}{6}{}{%
         {{hash=e4d859d274379d7786ca1f8d271eabfb}{%

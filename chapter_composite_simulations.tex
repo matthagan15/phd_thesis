@@ -30,7 +30,7 @@
 \newcommand{\expect}[1]{\mathbb{E}\brackets{#1}}
 
 
-\chapter{Composite Simulations}
+\chapter{Composite Simulations} \label{ch:composite_sims}
 
 \section{Introduction}\label{sec:intro}
 The simulation of quantum systems remains one of the most compelling applications for future digital quantum computers~\cite{whitfield2011simulation,jordan2012quantum,reiher2017elucidating,babbush2019quantum,su2021fault,o2021efficient}. As such, there are a plethora of algorithm options for compiling a unitary evolution operator $U(t) = e^{-i H t}$ to circuit gates~\cite{aharonov2003adiabatic,berry2007efficient,berry2015simulating,childs2019faster,low2019hamiltonian,low2019well,low2018hamiltonian,qdriftCampbell}. Some of the simplest such algorithms are product formulas in which each term in a Hamiltonian $H = \sum_i h_i H_i$ is implemented as $e^{iH_it}$. A product formula is then a particular sequence
