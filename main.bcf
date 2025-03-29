@@ -2253,4 +2253,357 @@
     <bcf:constraints>
       <bcf:entrytype>misc</bcf:entrytype>
       <bcf:entrytype>software</bcf:entrytype>
-      <bcf:cons
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>online</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+        <bcf:fieldor>
+          <bcf:field>url</bcf:field>
+          <bcf:field>doi</bcf:field>
+          <bcf:field>eprint</bcf:field>
+        </bcf:fieldor>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>patent</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>number</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>periodical</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>editor</bcf:field>
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>proceedings</bcf:entrytype>
+      <bcf:entrytype>mvproceedings</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>inproceedings</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>booktitle</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>report</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>type</bcf:field>
+        <bcf:field>institution</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>thesis</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>type</bcf:field>
+        <bcf:field>institution</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>unpublished</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:constraint type="data" datatype="isbn">
+        <bcf:field>isbn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="issn">
+        <bcf:field>issn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="ismn">
+        <bcf:field>ismn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="pattern" pattern="(?:sf|sm|sn|pf|pm|pn|pp)">
+        <bcf:field>gender</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+  </bcf:datamodel>
+  <!-- CITATION DATA -->
+  <!-- SECTION 0 -->
+  <bcf:bibdata section="0">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">main.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="0">
+    <bcf:citekey order="1">lloyd1996universal</bcf:citekey>
+    <bcf:citekey order="2">low2019hamiltonian</bcf:citekey>
+    <bcf:citekey order="3">childs2021theory</bcf:citekey>
+    <bcf:citekey order="4">lloyd1996universal</bcf:citekey>
+    <bcf:citekey order="5">whitfield2011simulation</bcf:citekey>
+    <bcf:citekey order="5">jordan2012quantum</bcf:citekey>
+    <bcf:citekey order="5">reiher2017elucidating</bcf:citekey>
+    <bcf:citekey order="5">babbush2019quantum</bcf:citekey>
+    <bcf:citekey order="5">su2021fault</bcf:citekey>
+    <bcf:citekey order="5">o2021efficient</bcf:citekey>
+    <bcf:citekey order="6">aharonov2003adiabatic</bcf:citekey>
+    <bcf:citekey order="6">berry2007efficient</bcf:citekey>
+    <bcf:citekey order="6">berry2015simulating</bcf:citekey>
+    <bcf:citekey order="6">childs2019faster</bcf:citekey>
+    <bcf:citekey order="6">low2019hamiltonian</bcf:citekey>
+    <bcf:citekey order="6">low2019well</bcf:citekey>
+    <bcf:citekey order="6">low2018hamiltonian</bcf:citekey>
+    <bcf:citekey order="6">qdriftCampbell</bcf:citekey>
+    <bcf:citekey order="7">berry2007efficient</bcf:citekey>
+    <bcf:citekey order="7">wiebe2010higher</bcf:citekey>
+    <bcf:citekey order="7">childs2019faster</bcf:citekey>
+    <bcf:citekey order="7">childs2021theory</bcf:citekey>
+    <bcf:citekey order="8">qdriftCampbell</bcf:citekey>
+    <bcf:citekey order="8">berry2020time</bcf:citekey>
+    <bcf:citekey order="9">bucket_sim</bcf:citekey>
+    <bcf:citekey order="10">bucket_sim</bcf:citekey>
+    <bcf:citekey order="11">coalescing_con_wiebe</bcf:citekey>
+    <bcf:citekey order="12">kivlichan2019phase</bcf:citekey>
+    <bcf:citekey order="13">hybridized_interaction_pic</bcf:citekey>
+    <bcf:citekey order="14">hybridized_interaction_pic</bcf:citekey>
+    <bcf:citekey order="15">sparsto</bcf:citekey>
+    <bcf:citekey order="16">sparsto</bcf:citekey>
+    <bcf:citekey order="17">sparsto</bcf:citekey>
+    <bcf:citekey order="18">jin2021partially</bcf:citekey>
+    <bcf:citekey order="19">babbush2018low</bcf:citekey>
+    <bcf:citekey order="20">whitfield2011simulation</bcf:citekey>
+    <bcf:citekey order="21">suzuki</bcf:citekey>
+    <bcf:citekey order="22">childs2021theory</bcf:citekey>
+    <bcf:citekey order="23">childs2021theory</bcf:citekey>
+    <bcf:citekey order="24">childs2021theory</bcf:citekey>
+    <bcf:citekey order="25">childs2021theory</bcf:citekey>
+    <bcf:citekey order="26">childs2021theory</bcf:citekey>
+    <bcf:citekey order="27">childs2021theory</bcf:citekey>
+    <bcf:citekey order="28">childs2021theory</bcf:citekey>
+    <bcf:citekey order="29">childs2021theory</bcf:citekey>
+    <bcf:citekey order="30">qdrift</bcf:citekey>
+    <bcf:citekey order="31">qdrift</bcf:citekey>
+    <bcf:citekey order="32">qdrift</bcf:citekey>
+    <bcf:citekey order="33">qdriftCampbell</bcf:citekey>
+    <bcf:citekey order="34">childs2019faster</bcf:citekey>
+    <bcf:citekey order="35">childs2019faster</bcf:citekey>
+    <bcf:citekey order="36">childs2012hamiltonian</bcf:citekey>
+    <bcf:citekey order="36">low2019well</bcf:citekey>
+    <bcf:citekey order="36">faehrmann2021randomizing</bcf:citekey>
+    <bcf:citekey order="37">childs2012hamiltonian</bcf:citekey>
+    <bcf:citekey order="38">wiebe2010higher</bcf:citekey>
+    <bcf:citekey order="38">low2019well</bcf:citekey>
+    <bcf:citekey order="39">childs2012hamiltonian</bcf:citekey>
+    <bcf:citekey order="39">berry2015simulating</bcf:citekey>
+    <bcf:citekey order="40">berry2015hamiltonian</bcf:citekey>
+    <bcf:citekey order="41">berry2015simulating</bcf:citekey>
+    <bcf:citekey order="42">low2019hamiltonian</bcf:citekey>
+    <bcf:citekey order="43">Chen_2021</bcf:citekey>
+    <bcf:citekey order="44">low2018hamiltonian</bcf:citekey>
+    <bcf:citekey order="45">coalescing_con_wiebe</bcf:citekey>
+    <bcf:citekey order="46">aspuru2005simulated</bcf:citekey>
+    <bcf:citekey order="47">reiher2017elucidating</bcf:citekey>
+    <bcf:citekey order="48">tensorHypercontraction</bcf:citekey>
+    <bcf:citekey order="49">brandao2019sdp</bcf:citekey>
+    <bcf:citekey order="50">anshu_sample-efficient_2021</bcf:citekey>
+    <bcf:citekey order="51">kempe2005complexitylocalhamiltonianproblem</bcf:citekey>
+    <bcf:citekey order="52">metropolis1953equation</bcf:citekey>
+    <bcf:citekey order="53">roth1996hardness</bcf:citekey>
+    <bcf:citekey order="54">signProblemOG</bcf:citekey>
+    <bcf:citekey order="55">troyer2005sign</bcf:citekey>
+    <bcf:citekey order="56">beskos2010optimaltuninghybridmontecarlo</bcf:citekey>
+    <bcf:citekey order="57">betancourt2018conceptualintroductionhamiltonianmonte</bcf:citekey>
+    <bcf:citekey order="58">temme2011</bcf:citekey>
+    <bcf:citekey order="59">marriott2005quantum</bcf:citekey>
+    <bcf:citekey order="60">chen2023quantumthermalstatepreparation</bcf:citekey>
+    <bcf:citekey order="61">gilyen2024quantumgeneralizationsglaubermetropolis</bcf:citekey>
+    <bcf:citekey order="62">motlagh2024ground</bcf:citekey>
+    <bcf:citekey order="63">motta2019</bcf:citekey>
+    <bcf:citekey order="64">ding2024single</bcf:citekey>
+    <bcf:citekey order="65">davies1974markovian</bcf:citekey>
+    <bcf:citekey order="66">ding2024single</bcf:citekey>
+    <bcf:citekey order="67">gilyen2024quantumgeneralizationsglaubermetropolis</bcf:citekey>
+    <bcf:citekey order="68">ding2024efficientquantumgibbssamplers</bcf:citekey>
+    <bcf:citekey order="69">kms2</bcf:citekey>
+    <bcf:citekey order="70">kms1</bcf:citekey>
+    <bcf:citekey order="71">gilyen2024quantumgeneralizationsglaubermetropolis</bcf:citekey>
+    <bcf:citekey order="72">dalzell2023quantumalgorithmssurveyapplications</bcf:citekey>
+    <bcf:citekey order="73">chen2023quantumthermalstatepreparation</bcf:citekey>
+    <bcf:citekey order="74">rouze2024efficientthermalizationuniversalquantum</bcf:citekey>
+    <bcf:citekey order="75">gilyen2024quantumgeneralizationsglaubermetropolis</bcf:citekey>
+    <bcf:citekey order="76">ding2024single</bcf:citekey>
+    <bcf:citekey order="77">shtanko2023preparingthermalstatesnoiseless</bcf:citekey>
+    <bcf:citekey order="78">temme2011</bcf:citekey>
+    <bcf:citekey order="79">shtanko2023preparingthermalstatesnoiseless</bcf:citekey>
+    <bcf:citekey order="80">neal1993probabilistic</bcf:citekey>
+    <bcf:citekey order="81">hoffman2011nouturnsampleradaptivelysetting</bcf:citekey>
+    <bcf:citekey order="82">shtanko2023preparingthermalstatesnoiseless</bcf:citekey>
+    <bcf:citekey order="83">ciccarello2022repeated</bcf:citekey>
+    <bcf:citekey order="84">polla2021quantum</bcf:citekey>
+    <bcf:citekey order="85">prositto2025equilibrium</bcf:citekey>
+    <bcf:citekey order="86">pocrnic2024quantumsimulationlindbladiandynamics</bcf:citekey>
+    <bcf:citekey order="87">ding2024single</bcf:citekey>
+    <bcf:citekey order="88">levin2017markov</bcf:citekey>
+    <bcf:citekey order="89">jerison2013general</bcf:citekey>
+    <bcf:citekey order="90">prositto2025equilibrium</bcf:citekey>
+    <bcf:citekey order="91">hoffman2011nouturnsampleradaptivelysetting</bcf:citekey>
+    <bcf:citekey order="92">prositto2025equilibrium</bcf:citekey>
+    <bcf:citekey order="93">choi2023preparing</bcf:citekey>
+    <bcf:citekey order="94">low2019hamiltonian</bcf:citekey>
+    <bcf:citekey order="95">childs2021theory</bcf:citekey>
+    <bcf:citekey order="96">webb2015clifford</bcf:citekey>
+    <bcf:citekey order="97">hagan2023composite</bcf:citekey>
+    <bcf:citekey order="98">mcclean2020openfermion</bcf:citekey>
+    <bcf:citekey order="99">sun2018pyscf</bcf:citekey>
+    <bcf:citekey order="100">whitfield2011simulation</bcf:citekey>
+    <bcf:citekey order="101">mcclean2020openfermion</bcf:citekey>
+    <bcf:citekey order="102">sun2018pyscf</bcf:citekey>
+    <bcf:citekey order="103">babbush2018low</bcf:citekey>
+    <bcf:citekey order="104">babbush2018low</bcf:citekey>
+    <bcf:citekey order="105">babbush2018low</bcf:citekey>
+    <bcf:citekey order="106">mcclean2020openfermion</bcf:citekey>
+    <bcf:citekey order="107">hagan2022composite</bcf:citekey>
+    <bcf:citekey order="108">mc2023classically</bcf:citekey>
+    <bcf:citekey order="109">pedregosa2011scikit</bcf:citekey>
+    <bcf:citekey order="110">hagan2022composite</bcf:citekey>
+    <bcf:citekey order="111">hagan2022composite</bcf:citekey>
+    <bcf:citekey order="112">haah2021quantum</bcf:citekey>
+    <bcf:citekey order="113">auerbach1995supercooling</bcf:citekey>
+    <bcf:citekey order="114">mpemba</bcf:citekey>
+    <bcf:citekey order="115">nickMpemba</bcf:citekey>
+    <bcf:citekey order="116">mpembaExplanation</bcf:citekey>
+    <bcf:citekey order="117">zhang2025mpembaObservation</bcf:citekey>
+    <bcf:citekey order="118">mcclean2020openfermion</bcf:citekey>
+    <bcf:citekey order="119">pyscf</bcf:citekey>
+    <bcf:citekey order="120">brandao2021complexity</bcf:citekey>
+    <bcf:citekey order="121">rastegin2012relations</bcf:citekey>
+    <bcf:citekey order="122">lloyd1996universal</bcf:citekey>
+    <bcf:citekey order="123">low2019hamiltonian</bcf:citekey>
+    <bcf:citekey order="124">childs2021theory</bcf:citekey>
+    <bcf:citekey order="125">whitfield2011simulation</bcf:citekey>
+    <bcf:citekey order="126">jordan2012quantum</bcf:citekey>
+    <bcf:citekey order="127">reiher2017elucidating</bcf:citekey>
+    <bcf:citekey order="128">babbush2019quantum</bcf:citekey>
+    <bcf:citekey order="129">su2021fault</bcf:citekey>
+    <bcf:citekey order="130">o2021efficient</bcf:citekey>
+    <bcf:citekey order="131">aharonov2003adiabatic</bcf:citekey>
+    <bcf:citekey order="132">berry2007efficient</bcf:citekey>
+    <bcf:citekey order="133">berry2015simulating</bcf:citekey>
+    <bcf:citekey order="134">childs2019faster</bcf:citekey>
+    <bcf:citekey order="135">low2019well</bcf:citekey>
+    <bcf:citekey order="136">low2018hamiltonian</bcf:citekey>
+    <bcf:citekey order="137">qdriftCampbell</bcf:citekey>
+    <bcf:citekey order="138">wiebe2010higher</bcf:citekey>
+    <bcf:citekey order="139">berry2020time</bcf:citekey>
+    <bcf:citekey order="140">bucket_sim</bcf:citekey>
+    <bcf:citekey order="141">coalescing_con_wiebe</bcf:citekey>
+    <bcf:citekey order="142">kivlichan2019phase</bcf:citekey>
+    <bcf:citekey order="143">hybridized_interaction_pic</bcf:citekey>
+    <bcf:citekey order="144">sparsto</bcf:citekey>
+    <bcf:citekey order="145">jin2021partially</bcf:citekey>
+    <bcf:citekey order="146">babbush2018low</bcf:citekey>
+    <bcf:citekey order="147">suzuki</bcf:citekey>
+    <bcf:citekey order="148">qdrift</bcf:citekey>
+    <bcf:citekey order="149">childs2012hamiltonian</bcf:citekey>
+    <bcf:citekey order="150">faehrmann2021randomizing</bcf:citekey>
+    <bcf:citekey order="151">berry2015hamiltonian</bcf:citekey>
+    <bcf:citekey order="152">Chen_2021</bcf:citekey>
+    <bcf:citekey order="153">aspuru2005simulated</bcf:citekey>
+    <bcf:citekey order="154">tensorHypercontraction</bcf:citekey>
+    <bcf:citekey order="155">brandao2019sdp</bcf:citekey>
+    <bcf:citekey order="156">anshu_sample-efficient_2021</bcf:citekey>
+    <bcf:citekey order="157">kempe2005complexitylocalhamiltonianproblem</bcf:citekey>
+    <bcf:citekey order="158">metropolis1953equation</bcf:citekey>
+    <bcf:citekey order="159">roth1996hardness</bcf:citekey>
+    <bcf:citekey order="160">signProblemOG</bcf:citekey>
+    <bcf:citekey order="161">troyer2005sign</bcf:citekey>
+    <bcf:citekey order="162">beskos2010optimaltuninghybridmontecarlo</bcf:citekey>
+    <bcf:citekey order="163">betancourt2018conceptualintroductionhamiltonianmonte</bcf:citekey>
+    <bcf:citekey order="164">temme2011</bcf:citekey>
+    <bcf:citekey order="165">marriott2005quantum</bcf:citekey>
+    <bcf:citekey order="166">chen2023quantumthermalstatepreparation</bcf:citekey>
+    <bcf:citekey order="167">gilyen2024quantumgeneralizationsglaubermetropolis</bcf:citekey>
+    <bcf:citekey order="168">motlagh2024ground</bcf:citekey>
+    <bcf:citekey order="169">motta2019</bcf:citekey>
+    <bcf:citekey order="170">ding2024single</bcf:citekey>
+    <bcf:citekey order="171">davies1974markovian</bcf:citekey>
+    <bcf:citekey order="172">ding2024efficientquantumgibbssamplers</bcf:citekey>
+    <bcf:citekey order="173">kms2</bcf:citekey>
+    <bcf:citekey order="174">kms1</bcf:citekey>
+    <bcf:citekey order="175">dalzell2023quantumalgorithmssurveyapplications</bcf:citekey>
+    <bcf:citekey order="176">rouze2024efficientthermalizationuniversalquantum</bcf:citekey>
+    <bcf:citekey order="177">shtanko2023preparingthermalstatesnoiseless</bcf:citekey>
+    <bcf:citekey order="178">neal1993probabilistic</bcf:citekey>
+    <bcf:citekey order="179">hoffman2011nouturnsampleradaptivelysetting</bcf:citekey>
+    <bcf:citekey order="180">ciccarello2022repeated</bcf:citekey>
+    <bcf:citekey order="181">polla2021quantum</bcf:citekey>
+    <bcf:citekey order="182">prositto2025equilibrium</bcf:citekey>
+    <bcf:citekey order="183">pocrnic2024quantumsimulationlindbladiandynamics</bcf:citekey>
+    <bcf:citekey order="184">levin2017markov</bcf:citekey>
+    <bcf:citekey order="185">jerison2013general</bcf:citekey>
+    <bcf:citekey order="186">choi2023preparing</bcf:citekey>
+    <bcf:citekey order="187">webb2015clifford</bcf:citekey>
+    <bcf:citekey order="188">hagan2023composite</bcf:citekey>
+    <bcf:citekey order="189">mcclean2020openfermion</bcf:citekey>
+    <bcf:citekey order="190">sun2018pyscf</bcf:citekey>
+    <bcf:citekey order="191">hagan2022composite</bcf:citekey>
+    <bcf:citekey order="192">mc2023classically</bcf:citekey>
+    <bcf:citekey order="193">pedregosa2011scikit</bcf:citekey>
+    <bcf:citekey order="194">haah2021quantum</bcf:citekey>
+    <bcf:citekey order="195">auerbach1995supercooling</bcf:citekey>
+    <bcf:citekey order="196">mpemba</bcf:citekey>
+    <bcf:citekey order="197">nickMpemba</bcf:citekey>
+    <bcf:citekey order="198">mpembaExplanation</bcf:citekey>
+    <bcf:citekey order="199">zhang2025mpembaObservation</bcf:citekey>
+    <bcf:citekey order="200">pyscf</bcf:citekey>
+    <bcf:citekey order="201">brandao2021complexity</bcf:citekey>
+    <bcf:citekey order="202">rastegin2012relations</bcf:citekey>
+  </bcf:section>
+  <!-- SORTING TEMPLATES -->
+  <bcf:sortingtemplate name="nty">
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">presort</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2" final="1">
+      <bcf:sortitem order="1">sortkey</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="3">
+      <bcf:sortitem order="1">sortname</bcf:sortitem>
+      <bcf:sortitem order="2">author</bcf:sortitem>
+      <bcf:sortitem order="3">editor</bcf:sortitem>
+      <bcf:sortitem order="4">translator</bcf:sortitem>
+      <bcf:sortitem order="5">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="6">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="4">
+      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="2">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="5">
+      <bcf:sortitem order="1">sortyear</bcf:sortitem>
+      <bcf:sortitem order="2">year</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="6">
+      <bcf:sortitem order="1">volume</bcf:sortitem>
+      <bcf:sortitem literal="1" order="2">0</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sortingtemplate>
+  <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="nty/global//global/global"
+                type="entry"
+                sortingtemplatename="nty"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+</bcf:controlfile>
