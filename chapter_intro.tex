@@ -73,7 +73,7 @@ We will now collect these basic observations, along with an optimization that el
     \begin{equation}
         e^{i P t} = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} P^k = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} (U_P \prod_i Z_i^{p_i} U_P^\dagger)^k = U_P \left(\sum_{k = 0}^\infty \frac{(i t)^k}{k!} ( \prod_i Z_i^{p_i})^k \right) U_P^\dagger = U_P e^{i \prod_i Z_i^{p_i} t} U_P^\dagger.
     \end{equation}
-    This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations. We now need to show that the CNOT sequence and single qubit $Z$ rotation perform arbitrary tensor product $Z$ rotations. Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Consider a basis state $\ket{a} = \ket{a_1}\ket{a_2}\ldots \ket{a_n}$, where each $a_i$ is 0 or 1. Let $\ket{s} = \ket{s_1} \ket{s_2} \ldots \ket{s_w}$ denote the basis states $a_i$ that are in the support of $P$. As CNOT$(1,2) \ket{b}\ket{c} = \ket{b} \ket{b \oplus c}$, where $b \oplus c$ is the addition of $b$ and $c$ mod 2, we have that the product
+    This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations. We now need to show that the CNOT sequence and single qubit $Z$ rotation perform arbitrary tensor product $Z$ rotations. Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Let $\ket{s} = \ket{s_1} \ket{s_2} \ldots \ket{s_w}$ denote a basis state for the qubits that are in the support of $P$. As CNOT$(1,2) \ket{a}\ket{b} = \ket{a} \ket{a \oplus b}$, where $a \oplus b$ is the addition of $a$ and $b$ mod 2, we have that the product
     \begin{equation}
         \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) \ket{s} = \ket{s_1} \ldots \ket{s_{w-1}} \ket{s_1 \oplus s_2 \oplus \ldots \oplus s_w}
     \end{equation}
@@ -96,53 +96,106 @@ We will now collect these basic observations, along with an optimization that el
 \end{proof}
 
 Lemma \ref{lem:pauli_rotations} serves as the basis for a class of simulation algorithms known as Pauli formulas.
-We will introduce and prove two techniques for time-independent Hamiltonian simulation in this section, namely Trotter formulas and the randomized channel QDRIFT, as they serve as the basis for the optimizations that we introduce later in Chapter \ref{ch:composite_sims}. The first order Trotter formula was the first simulation algorithm and was developed by Lloyd \cite{lloyd1996universal}. The advantages of this algorithm is that it is straightforward, easy to implement, and requires no ancilla qubits. The downside is that analytically our bounds on the runtime of the algorithm scale as $O\left( L \frac{t^2}{\epsilon}\right)$ for the first order formula, which is significantly worse than the lower bound of $\Omega\left(t + \log \frac{1}{\epsilon} \right)$. This spurred the development of more sophisticated techniques for the Hamiltonian simulation problem, many of which require a different input model, namely a block-encoding, for the Hamiltonian than the Pauli decomposition we consider, leading to asymptotically optimal algorithms \cite{low2019hamiltonian} that utilize only a single additional ancilla qubit. However, many practitioners observed that in practice Trotter algorithms tended to drastically outperform their worst case analyses. The analysis of product formulas was improved to account for the commutation structure of the Hamiltonian in \cite{childs2021theory} and was shown to be superior to analytically ``optimal'' techniques for certain Hamiltonians. Recently improved analysis of Trotter formulas showed that entanglement can improve these error estimates, so progress is still being made in undestanding the performance of Trotter nearly 30 years later. 
+We will introduce and prove two techniques for time-independent Hamiltonian simulation in this section, namely Trotter formulas and the randomized channel QDRIFT, as they serve as the basis for the optimizations that we introduce later in Chapter \ref{ch:composite_sims}.
+The first order Trotter formula was the first simulation algorithm and was developed by Lloyd \cite{lloyd1996universal}. 
+The advantages of this algorithm is that it is straightforward, easy to implement, and requires no ancilla qubits. 
+The downside is that analytically our bounds on the runtime of the algorithm scale as $O\left( L \frac{t^2}{\epsilon}\right)$ for the first order formula, which is significantly worse than the lower bound of $\Omega\left(t + \log \frac{1}{\epsilon} \right)$. 
+This spurred the development of more sophisticated techniques for the Hamiltonian simulation problem, many of which require a different input model, namely a block-encoding, for the Hamiltonian than the Pauli decomposition we consider, leading to asymptotically optimal algorithms \cite{low2019hamiltonian} that utilize only a single additional ancilla qubit. However, many practitioners observed that in practice Trotter algorithms tended to drastically outperform their worst case analyses. The analysis of product formulas was improved to account for the commutation structure of the Hamiltonian in \cite{childs2021theory} and was shown to be superior to analytically ``optimal'' techniques for certain Hamiltonians. Recently improved analysis of Trotter formulas showed that entanglement can improve these error estimates, so progress is still being made in undestanding the performance of Trotter nearly 30 years later. For now, we will present a complete proof of the first order Trotter formula and provide references for the higher order formulas.
 
-The second method we will 
-
-
-The first two methods we introduce are the first and second order Trotter formulas, which are also chronologically the first methods developed \cite{lloyd1996universal}. These are deterministic methods that simulate a Hamiltonian $H = \sum_{i = 1}^L h_i H_i$, where for simplicity we have pulled out the 
-Now we will show how to build the simplest product formula: a first order Trotter decomposition. 
-Let $H = \sum_{i = 1}^{L} h_i H_i$, where $H_i$ is a Pauli string. Our goal is to prove the following
+Before we present the first order Trotter theorem we will need to define some channels first. Let $\mathcal{U}(t)$ denote the ideal time evolution channel with respect to a hamiltonian $H = \sum_{i = 1}^L h_i H_i$
 \begin{equation}
-    U_{\rm TS}^{(1)}(t) \coloneqq e^{i h_1 H_1 t}e^{i h_2 H_2 t} \ldots e^{i h_L H_L t} 
+    \mathcal{U}(t) \coloneqq U(t) \rho U(t)^dagger = e^{-i H t} \rho e^{+i H t}.
 \end{equation}
-and then eventually we want to prove the second order Trotter formula
+The first order Trotter formula is given by the following unitary
 \begin{equation}
-    U_{\rm TS}^{(2)} = e^{i h_1 H_1 t/2} e^{i h_2 H_2 t/2} \ldots e^{i h_L H_L t / 2} e^{i h_L H_L t / 2} \ldots e^{i h_2 H_2 t/2} e^{i h_1 H_1 t/2}
+    U_{\rm TS}^{(1)}(t) \coloneqq e^{i h_1 H_1 t}e^{i h_2 H_2 t} \ldots e^{i h_L H_L t} = \prod_{i = 1}^L e^{i h_i H_i t},
 \end{equation}
+which is typically repeated for $r$ applications with each simulating a time $t / r$, which is also called the Trotter step size. We bound the number of applications $r$ needed for the first order Trotter channel $\mathcal{U}_{\rm TS}^{(1)}(t)$ to approximate the ideal dynamics below.
+\begin{theorem}[First Order Trotter]
+    Given a Hamiltonian $H = \sum_{i = 1}^L h_i H_i$, there exists an $r$ such that the first order Trotter formula $U_{\rm TS}^{(1)}(t)$ is an $\epsilon$ approximation to the ideal time evolution
+    \begin{equation}
+        \diamondnorm{\mathcal{U}(t) - \mathcal{U}_{\rm TS}^{(1)}(t/r)^{\circ r}} \le \epsilon
+    \end{equation}
+    via the diamond distance. This $r$ can be bounded by 
+    \begin{equation}
+        r \le
+    \end{equation}
+    leading to an overall cost in terms of the number of hamiltonian evolution gates as 
+    \begin{equation}
+        C_{\rm TS(1)}(H, t, \epsilon) \le .
+    \end{equation}
+\end{theorem}
+Before we prove this theorem we will need a minor lemma that allows us to convert bounds on the spectral norm approximation to the diamond distance. We separate this result into its own lemma to make use of it for higher order Trotter formulas as well.
+\begin{lemma}
+    Given two unitary channels $\mathcal{U}(\rho) = U \rho U^\dagger$ and $\mathcal{V}(\rho) = V \rho V^\dagger$ the diamond distance is at most twice the spectral norm distance between $U$ and $V$
+    \begin{equation}
+        \diamondnorm{\mathcal{U} - \mathcal{V}} \le 2 \norm{U - V}.
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    This proof follows from standard matrix norm manipulations and involves the use of the unitary invariance of the Sch\"{a}tten norms, invariance under the adjoint, $\norm{X}_p = \norm{X^\dagger}_p$, and one use of the H\"{o}lder inequality
+    \begin{align}
+        &\diamondnorm{\mathcal{U} - \mathcal{V}} \coloneqq \norm{\parens{\mathcal{U} - \mathcal{V}}\otimes \openone}_1 \label{eq:diamond_to_spectral_start} \\
+        =& \max_{\rho : \norm{\rho}_1 \leq 1} \norm{\parens{U \otimes \openone} \rho \parens{U^\dagger \otimes \openone} - \parens{V \otimes \openone} \rho \parens{V^\dagger \otimes \openone} }_1 \\
+        \leq& \max_{\rho : \norm{\rho}_1 \leq 1} \norm{\parens{U \otimes \openone} \rho \parens{U^\dagger \otimes \openone} - \parens{U \otimes \openone} \rho \parens{V^\dagger \otimes \openone} }_1 \\
+        ~& +\max_{\rho : \norm{\rho}_1 \leq 1} \norm{\parens{U \otimes \openone} \rho \parens{V^\dagger \otimes \openone}  - \parens{V \otimes \openone} \rho \parens{V^\dagger \otimes \openone} }_1 \nonumber \\
+        =& \max_{\rho : \norm{\rho}_1 \leq 1} \norm{\rho \parens{U^\dagger - V^\dagger}\otimes \openone}_1 + \max_{\rho : \norm{\rho}_1 \leq 1} \norm{\parens{U - V}\otimes \openone \rho}_1 \\
+        \leq & 2 \norm{U - V}_\infty \max_{\rho : \norm{\rho}_1 \leq 1} \norm{\rho}_1 \\
+        = & 2 \norm{U - V}. \label{eq:TS_intermediate_1}
+    \end{align}
+\end{proof}
+Now we turn to our proof of the first order Trotter formula.
+\begin{proof}
+    Consider the Taylor expansion of the exact single step evolution
+    \begin{equation}
+        e^{i H t/r} = \identity + \frac{i t}{r} \sum_i h_i H_i + R(t / r)
+    \end{equation}
+    compared to the first order Trotter expression
+    \begin{equation}
+        \prod_{i = 1}^L e^{i h_i H_i t / r} = \prod_{i = 1}^L \left( \identity + \frac{i t}{r} h_i H_i + R_{H_i}(t/r) \right) = \identity = \frac{i t}{r} \sum_{i} h_i H_i + R_{\rm TS}(t/r).
+    \end{equation}
+    The remainder term $R$ denotes the ideal remainder, $R_{H_i}$ the remainder for the $H_i$ factor, and $R_{\rm TS}$ the overall Trotter-Suzuki remainder. The mean value variant of Taylor's remainder theorem guarantees that for all $t/r \in [0, t]$ there exists a special value $t_\star$ such that the above equalities hold and the value for the remainders are given by
+    \begin{align}
+        R_{\rm TS}(t/r) &= \frac{(i t_\star)^2}{2!} H^2 \\
+        R_{H_i}(t/r) &= \frac{(i t_\star' h_i)^2}{2!} H_i^2 .
+    \end{align}
 
+    First lets prove it for two terms. The Trotter remainder contributes as
+    \begin{align}
+        e^{i h_1 H_1 t} e^{i h_2 H_2 t} &= \left( \identity + i t h_1 H_1 + \frac{- t_\star^2 h_1^2}{2!} H_1^2 \right)\left( \identity + i t h_2 H_2 + \frac{- t_\star'^2 h_2^2}{2!} H_2^2 \right) \\
+        &= \identity + i t (h_1 H_1 + h_2 H_2) - \frac{t_\star^2}{2} h_1^2 H_1^2 - \frac{t_\star'^2 }{2!} h_2^2 H_2^2 - t^2 h_1 h_2 H_1 H_2 + \bigo{t^3},
+    \end{align}
+    whereas the ideal remainder error is
+    \begin{align}
+        e^{i H t} &= \identity + i H t - \frac{t_\star''^2}{2!} (h_1 H_1 + h_2 H_2)^2 \\
+        &= \identity + i H t - \frac{t_\star''^2}{2!} (h_1^2 H_1^2 + h_1 h_2(H_1 H_2 + H_2 H_1) + h_2^2 H_2^2).
+    \end{align}
+    This gives the difference as
+    \begin{align}
+        &\norm{U(t) - U_{\rm TS}(t)} \\
+        &\le \norm{\frac{1}{2} h_1^2 H_1^2 (t_\star^2 - t_\star''^2) +  \frac{1}{2} h_2^2 H_2^2 (t_\star^2 - t_\star'^2) +  \frac{1}{2} t_\star''^2 h_1 h_2 (H_1 H_2 + H_2 H_1) - t^2 h_1 h_2 H_1 H_2} + \bigo{t^3}.
+    \end{align}
+    Setting $t_\star = t_\star' = t_\star'' = t$ yields
+    \begin{equation}
+        \norm{U(t) - U_{\rm TS}(t)} \le \frac{t^2}{2} h_1 h_2 \norm{[H_1, H_2]} + \bigo{t^3}. \label{eq:first_order_trotter_proof_1}
+    \end{equation}
+
+    In order to bound the error we will repeat our unitary $r$ times for time steps of $t/r$, which yields
+    \begin{equation}
+        \norm{U(t) - U_{\rm TS}(t)} = \norm{U(t/r)^r - U_{\rm TS}(t/r)^r} \le r \norm{U(t/r) - U_{\rm TS}(t/r)}.
+    \end{equation}
+    Now by ignoring the contribution of the $\bigo{t^3}$ term in Eq. \ref{eq:first_order_trotter_proof_1} and plugging the above into Eq. \ref{eq:first_order_trotter_proof_1} we have that 
+    \begin{equation}
+        \norm{U(t) - U_{\rm TS}(t)} \le \frac{t^2}{2 r} h_1 h_2 \norm{[H_1, H_2]},
+    \end{equation}
+    which we can then choose $r \ge \frac{t^2}{\epsilon}h_1 h_2 \norm{[H_1, H_2]}$ is sufficient to guarantee $\norm{U(t) - U_{\rm TS}(t)} \le \epsilon / 2$.
+\end{proof}
+
+$$\ket{a}\bra{b} vs. \ketbra{a}{b} vs. |a\rangle\langle b|$$
 
 The next thing we have to discuss is the QDrift Channel. This channel is a randomized product formula, meaning that instead of visiting the terms in the Hamiltonian one by one, we will randomly choose a term from the Hamiltonian and simulate it. By repeating this process we can approximate the overall time evolution channel. As we are implementing a probabilistic application of a unitary time evolution we need to represent the algorithm as a quantum channel acting on density matrices
 \begin{equation}
     \mathcal{U}_{\rm QD}(\rho; t) \coloneqq \sum_{i = 1}^L \frac{h_i}{\norm{h}} e^{-i H_i \tau} \rho e^{+i H_i \tau}.
 \end{equation}
 
-% Q: What is this thesis about!??@!??! Answer this with one sentence. Then extend to a paragraph. 
 
-% A: This thesis is an algorithm for digital fault tolerant computers to prepare thermal input states. It uses techniques from classical algorithms, specifically Hamiltonian Monte Carlo (HMC), that prepare markov chain monte carlo (MCMC) states. 
-
-% The central question of this thesis is how to prepare thermal input states for digital fault tolerant quantum computers using a minimal amount of ancilla overhead, just a single qubit. We assume access to 
-
-% The central quest of this thesis is how to prepare thermal input states for digital fault tolerant quantum computers using the minimal amount of overhead ancillae needed, which is just a single qubit. We accomplish this quest by analyzing a quantum analog of the Hamiltonian Monte Carlo (HMC, also known as hybrid Monte Carlo) algorithm. 
-
-% The central quest of this thesis is a proposed mechanism for quantum thermalization for arbitrary systems that can be simulated by quantum computers. 
-
-% The central quest that started this thesis was to develop a quantum analog 
-
-
-% This thesis is an attempt to understand a quantum analog of the Hamiltonian Monte Carlo (HMC) algorithm. If you are interested in the results of this experiment I will do my best to explain them starting from the beginning. This journey will involve an explanation of the original Metropolis-Hastings algorithm, the Hamiltonian modification that yields HMC, how to simulate weak interactions with an environment, and finally how to utilize these to prepare thermal states, the quantum version of the output of HMC. The last chapter of this thesis includes numerics that reinforce the analytic results. 
-
-% Our starting point is the Metropolis-Hastings algorithm. This algorithm was developed to address the fundamental problem facing scientists of ``scale''. As physics offers the most accurate underlying theory of microscopic interactions, we start there. When learning physics, the most common teaching tools are small, toy problems. A block on a perfectly triangular incline plane. A ball attached to the end of a very long pendulum that is barely moved from it's resting point. Although these problems are not 100\% realistic, they offer great starting points to add more realistic features. Maybe curvature is added to the incline plane or the oscillator is damped. We can make these toy problems more realistic in this manner, and typically they can be solved via perturbative methods or other various approximations. The more challenging issue when making these toy problems more realistic is the problem of scale. We can solve a single mass and spring, but how do we solve $10^{-23}$ masses and springs all connected together? 
-
-% This problem of scale leads to fundamentally different tools and techniques being used at various levels. The methods used by high energy theorists working ``closest to the metal'' are going to be radically different, but no more valid, than the techniques of climate scientists, which are different than cosmologists. This was first observed by Nobel laureate Paul Anderson with the philosophy ``More is Different'' \cite{moreIsDifferent}. One of the primary tools theorists have to address this difficulty of scale are classical computers. The reason computers allow us to transcend many orders of magnitude when solving problems is that they are simply much faster at basic arithmetic, namely floating point operations, than people. For example, at the time of writing the world record for the longest number memorized is 3260 digits memorized and recalled perfectly given an hour to commit the number to memory. A single Apple watch can store 700,000 equally long numbers and perform basic arithmetic on each one in less than a second. The sheer scale of exaflop supercomping ($10^{15}$ Floating Point OPerations) is difficult to comprehend or put in a human perspective. 
-
-% One of the oldest and most studied algorithm for physicists, chemists, or material scientists to take advantage of the absurdly large computational power of classical compute clusters is the Metropolis-Hastings algorithm \cite{metropolis1953equation}. This algorithm is a general purpose tool that allows one to sample from thermal distributions of a given classical Hamiltonian, and as such has given scientists a computational lens to understanding the behavior of large systems. However, one of the downsides to the algorithm is that it exhibits ``random walk'' behavior, meaning it explores the state space in a diffusive manner, leading to a scaling of $D^2$ where $D$ is the dimension of your dataset. To avoid this random walk, better techniques have been proposed that take advantage of gradient information to mimic Hamiltonian time evolution which allows one to traverse larger distances before generating a sample, which leads to less correlation.
-
-% On the physics side of the coin, these algorithms essentially prepare samples from the Boltzmann distribution $p_\beta (\vec{x}) = \frac{e^{-\beta H(\vec{x})}}{\int e^{-\beta H(\vec{x})} d\vec{x}}$. This is the generic distribution that describes the ``canonical'' ensemble, or the probability distribution that systems at a fixed temperature exhibit. This then allows us to estimate observables $O$ of systems at a given temperature $\beta$ as $\langle O \rangle = \int O(\vec{x}) p_\beta (\vec{x}) d\vec{x}$. As an example, if we would like to numerically explore what the average magnetization of a given compound is then the observable we are interested would be the average of all the component spins $O = \frac{1}{n} \sum_{i = 1}^n \hat{S}_i$. 
-
-% From a physics perspective, we have a pretty good idea of when classical systems tend to thermalize, or when their state is very close to the thermal state. We now that when in contact with a large bath at inverse temperature $\beta$ in the long time limit as $t \to \infty$ we get the thermal state for the system. For quantum mechanics the picture is much less clear. There exists models that mimic weak interactions with a large, memoryless bath that lead to systems thermalizing. One example of this are the Davies Generators \cite{davies1974markovian} which can lead to thermalization for arbitrary systems (I think) in the infinite time, zero coupling limit. Further confusing the picture is whether one wants to study an open quantum system, in which the environment is only important because of the transitions it can provide for the system, or a closed quantum system, in which a large system only interacts with itself and no external transfer of energy is present. Our best understanding of whenever a closed system can appear thermalized to a small observable is the Eigenstate Thermalization Hypothesis (ETH), which works for Hamiltonians that appear sufficiently random but not for all Hamiltonians (hence the name Eigenstate Thermalization \emph{Hypothesis}, not Theorem). 
-
-% This thesis is concerned with an intermediate regime for thermalization models. In the Davies Generator picture we are modeling a nearly infinite sized environment solely via the transitions it induces in the system and in the ETH picture we have no environment whatsoever. The thermalization model that we end up with has a very small environment, in our scenario a single qubit, that gets refreshed many times. This model is known as the Repeated Interactions (RI) model and is previously only studied for very small systems, namely 2 or 3 energy levels. In this thesis we will demonstrate how this model can be extended to an arbitrary non-degenerate system and the conditions dictating non-degeneracy are very weak and can most likely be lifted.
-
-% We will work our way up to this main contribution. To do so, we will first explore how we can improve the main quantum subroutine used, time independent Hamiltonian simulation.
