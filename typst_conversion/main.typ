@@ -3,130 +3,138 @@
 
 // Page Configuration
 #let page-setup(
-  margin-size: (
-    left: 1.25in,   // Left margin 1 1/4" (32 mm)
-    other: 0.75in   // Other margins 3/4" (20 mm)
-  )
+    margin-size: (
+        left: 1.25in, // Left margin 1 1/4" (32 mm)
+        other: 0.75in, // Other margins 3/4" (20 mm)
+    ),
 ) = {
-  set page(
-    paper: "us-letter",
-    margin: (
-      left: margin-size.left,
-      right: margin-size.other,
-      top: margin-size.other,
-      bottom: margin-size.other
+    set page(
+        paper: "us-letter",
+        margin: (
+            left: margin-size.left,
+            right: margin-size.other,
+            top: margin-size.other,
+            bottom: margin-size.other,
+        ),
     )
-  )
 
-  // Line spacing: at least 1.5
-  set par(leading: 1.5em)
+    // Line spacing: at least 1.5
+    set par(leading: 1.5em)
 }
 
 // Main Document Structure
 #let ut-thesis(
-  title: "Thesis Title",
-  author: "Author Name",
-  degree: "Doctor of Philosophy",
-  department: "Graduate Department",
-  graduation-year: datetime.today().year(),
-  body
+    title: "Thesis Title",
+    author: "Author Name",
+    degree: "Doctor of Philosophy",
+    department: "Graduate Department",
+    graduation-year: datetime.today().year(),
+    body,
 ) = {
-  // Page setup
-  page-setup()
+    // Page setup
+    page-setup()
 
-  // Title Page (no numbering, centered)
-  page(
-    // Approximate positioning based on guidelines
-    margin: (top: 2in, bottom: 1.25in),
-    align(center)[
-      #v(0pt)
-      #text(size: 12pt)[#smallcaps[#title]]
-      
-      #v(1.5in)
-      by
-      
-      #v(1.5in)
-      #text(size: 12pt)[#author]
-      
-      #v(2in)
-      A thesis submitted in conformity with the requirements \
-      for the degree of Doctor of Philosophy\
-      Department of Physics \
-      University of Toronto
-      
-      #v(1.25in)
-      © Copyright by #author #graduation-year
-    ]
-  )
+    // Title Page (no numbering, centered)
+    page(
+        // Approximate positioning based on guidelines
+        margin: (top: 2in, bottom: 1.25in),
+        align(center)[
+            #v(0pt)
+            #text(size: 12pt)[#smallcaps[#title]]
 
-  // Preliminary pages with Roman numerals
-  set page(
-    numbering: "i",
-    number-align: center
-  )
+            #v(1.5in)
+            by
 
-  // Abstract (double-spaced, max 350 words for doctoral thesis)
-  page[
-    #align(center)[
-      #v(1em)
-      #text(size: 12pt)[
-        #title\
-        #v(0.075cm)
-        #author\
-        #degree\
-        #v(0.075cm)
-        Department of Physics \
-        University of Toronto\
-        #graduation-year
-      ] \
-      #text(size: 14pt, weight: "bold")[Abstract]
-    ]
-    
-    #set par(leading: 2em)  // Double-spaced
-    // Placeholder for abstract content
-    // Actual content should be added by the user
-    #lorem(100)
-  ]
+            #v(1.5in)
+            #text(size: 12pt)[#author]
 
-  page[
-  #place(horizon + right, "To my siblings.")
-  ]
+            #v(2in)
+            A thesis submitted in conformity with the requirements \
+            for the degree of Doctor of Philosophy\
+            Department of Physics \
+            University of Toronto
 
-  page[
-    #align(center, 
-      text(size: 14pt, weight: "bold", [Acknowledgements])
+            #v(1.25in)
+            © Copyright by #author #graduation-year
+        ],
     )
-  ]
 
-  page[
-    #outline()
-  ]
+    // Preliminary pages with Roman numerals
+    set page(
+        numbering: "i",
+        number-align: center,
+    )
 
-  // Optional lists (user can customize/remove as needed)
-  page[
-    #outline(title: "List of Figures", target: figure.where(kind: image))
-  ]
+    // Abstract (double-spaced, max 350 words for doctoral thesis)
+    page[
+        #align(center)[
+            #v(1em)
+            #text(size: 12pt)[
+                #title\
+                #v(0.075cm)
+                #author\
+                #degree\
+                #v(0.075cm)
+                Department of Physics \
+                University of Toronto\
+                #graduation-year
+            ] \
+            #text(size: 14pt, weight: "bold")[Abstract]
+        ]
 
-  page[
-    #outline(title: "List of Tables", target: figure.where(kind: table))
-  ]
+        #set par(leading: 2em) // Double-spaced
+        // Placeholder for abstract content
+        // Actual content should be added by the user
+        #lorem(100)
+    ]
 
-  // Main document body with Arabic numerals
-  set page(numbering: "1")
-  
-  // Render the body of the document
-  body
+    page[
+        #place(horizon + right, "To my siblings.")
+    ]
+
+    page[
+        #align(
+            center,
+            text(size: 14pt, weight: "bold", [Acknowledgements]),
+        )
+    ]
+
+    page[
+        #outline()
+    ]
+
+    // Optional lists (user can customize/remove as needed)
+    page[
+        #outline(title: "List of Figures", target: figure.where(kind: image))
+    ]
+
+    page[
+        #outline(title: "List of Tables", target: figure.where(kind: table))
+    ]
+
+    // Main document body with Arabic numerals
+    set page(numbering: "1")
+
+    // Render the body of the document
+    body
 }
 
 #include "macros.typ"
 
 // Example Usage
 #show: ut-thesis.with(
-  title: "Preparing Thermal States on a Digital Quantum Computer",
-  author: "Matthew Hagan",
-  degree: "Doctor of Philosophy",
-  department: "Physics",
+    title: "Preparing Thermal States on a Digital Quantum Computer",
+    author: "Matthew Hagan",
+    degree: "Doctor of Philosophy",
+    department: "Physics",
 )
+
+// #import "@preview/ctheorems:1.1.3": *
+// #show: thmrules
+// #show: thmrules.with(qed-symbol: $square$)
+
+
+
 
 = Introduction
 #include "intro.typ"
@@ -134,33 +142,14 @@
 == Research Background
 More detailed content about the research context.
 
-sadfas;lkfj
-dfasfas
-fasdf
-fds
-dsf
-sadf
-dsf
-dfs
-dfs
-dfsa
-fasf
-f
-asdf
-asf
-
-
-// #lorem(100000)
-
-= Methodology
-
 = Conclusion
 Concluding remarks of the dissertation.
 
-#figure(table(
-  "1", "2", "3"
-),
-caption: []
+#figure(
+    table(
+        "1", "2", "3"
+    ),
+    caption: [],
 )
 
 #bibliography("references.bib")

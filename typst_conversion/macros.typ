@@ -4,3 +4,9 @@
 
 #let tp = $times.circle$
 #let id = [$bb(1)$]
+
+
+#import "@preview/ctheorems:1.1.3": *
+#let lemma = thmplain("lemma", "Lemma", inset: (x: 0cm, top: 0cm))
+#let proof = thmproof("proof", "Proof")
+#show: thmrules.with(qed-symbol: $square$)
