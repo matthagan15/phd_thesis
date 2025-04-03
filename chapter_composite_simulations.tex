@@ -34,7 +34,7 @@ There are two other simulation techniques that have been proposed recently that 
 
 The second method of note with both QDrift and Trotter behavior is that of Jin and Li \cite{jin2021partially}. They develop an analysis of the variance of a unitary consisting of a first-order Trotter sequence followed by a QDrift channel. They focus on bounding the Mean Squared Error (MSE) of the resulting channel and use a simple partition of the Hamiltonian terms based on spectral norm. Their partitioning scheme places all terms below some cutoff into the first-order Trotter sequence and all terms above the cutoff into the QDrift channel. Their main results show an interpolation of the MSE between 0 when the partitioning matches a solely Trotter channel and matching upper bounds for QDrift when all terms are randomly sampled. This work goes beyond the results from Jin and Li by providing an analysis of the diamond distance between an ideal evolution and our implemented channel, which is more useful analytically than the MSE, as well as providing upper bounds on the number of gates needed in an implementation to meet this diamond distance. In addition our work remains independent of specific partitioning schemes as much as possible and instead places restrictions on which partitions achieve improvements. In the interest of practicality we do show methods for partitioning that can be useful in both the first-order and higher-order Trotter cases. Specifically for higher-order Trotter formulas we give a probabilistic partitioning scheme that is easily computable and matches gate cost upper bounds in the extreme limits as our probabilities saturate the QDrift and Trotter limits. 
 
-The rest of the paper is organized as follows. We first provide a brief summary of the main results in Section \ref{sec:main}. After reviewing known results and notation in Section \ref{sec:prelim}, we explore methods for creating Composite channels using First-Order Trotter Formulas with QDrift in Section \ref{sec:first_order_trotter} as a warmup. This is broken down
+The rest of the paper is organized as follows. We first provide a brief summary of the main results in Section \ref{sec:main}. After reviewing known results and notation in Section \ref{sec:composite_prelim}, we explore methods for creating Composite channels using First-Order Trotter Formulas with QDrift in Section \ref{sec:first_order_trotter} as a warmup. This is broken down
 into three parts in which we find the gate cost for an arbitrary partition, we then give a method for producing a good partitioning, and then we analyze conditions in which a Composite channel can beat either first-order Trotter or QDrift channels. In Section \ref{sec:higher_order_trotter} we then extend this framework to more general higher-order Trotter Formulas. This section mirrors the organization of the first-order Trotter section,
 namely we find the cost of an arbitrary partition, we give a method for producing a partition efficiently, and then we analyze when one could see
 improvements over the constituent channels. Finally, in Section \ref{sec:discussion} we discuss extensions to this model that allow a flexible interpolation between various types of product formulas that could be leveraged numerically. 
@@ -113,7 +113,7 @@ Another useful consideration is the question of when a given simulation is likel
 %%%%%%%%%%%%%%%%%%%%                            SECTION: PRELIMINARIES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Preliminaries} \label{sec:prelim}
+\section{Preliminaries} \label{sec:composite_prelim}
 In this section we will first introduce the necessary notation we will use and then state known results about Trotter-Suzuki formulas and QDrift
 channels. We work exclusively with time-independent Hamiltonians $H$ in a $2^n$ dimensional Hilbert space $\hilbSpace$. We also assume that $H$
 consists of $L$ terms $H = \sum_{i = 1}^L h_i H_i$ where $h_i$ represents the spectral norm of the term, $H_i$ is a Hermitian operator on $\hilbSpace$, and $\norm{H_i} = 1$. Note without loss of generality we can always assume $h_i \geq 0$, as we can always absorb the phase into the 
@@ -272,7 +272,7 @@ where $X$ and $Y$ are channels. This follows straightforwardly from subadditivit
     \diamondnorm{\capU(t) - \widetilde{\capU}\parens{\frac{t}{r}}^{\circ r}} &\leq \diamondnorm{\parens{\capUB(\frac{t}{r}) \circ \capUA(\frac{t}{r}) + E_{\set{A,B}}(\frac{t}{r})}^{\circ r} - \parens{\widetilde{\capUA}(\frac{t}{r}) \circ \widetilde{\capUB}(\frac{t}{r})}^{\circ r}} \\
     &\leq r \parens{ \diamondnorm{\capUA(\frac{t}{r}) - \widetilde{\capUA}(\frac{t}{r})} + \diamondnorm{\capUB(\frac{t}{r}) - \widetilde{\capUB}(\frac{t}{r})} + \diamondnorm{E_{\set{A,B}}(\frac{t}{r})} }. \label{eq:dmd_bnd_intermediate_1}
 \end{align}
-This is now in a form where we can use the results from Section \ref{sec:prelim} for Trotter formulas and QDrift channels. We use the QDrift results from Theorem \ref{thm:QDrift} that $\diamondnorm{\capUB(t/r) - \widetilde{\capUB}(t/r)} \leq \frac{4 \lambda_B^2 t^2}{N_B r^2}$ and Eqs \eqref{eq:diamond_to_spectral_start} - \eqref{eq:TS_intermediate_1} from Theorem \ref{thm:trotter_cost}  to reduce $\diamondnorm{\capUA(t/r) - \widetilde{\capUA}(t/r)} \leq 2 \norm{e^{iAt/r} - \trotterU{1}(t/r)}_{\infty}$. The last term we need to bound is the outer-loop error
+This is now in a form where we can use the results from Section \ref{sec:composite_prelim} for Trotter formulas and QDrift channels. We use the QDrift results from Theorem \ref{thm:QDrift} that $\diamondnorm{\capUB(t/r) - \widetilde{\capUB}(t/r)} \leq \frac{4 \lambda_B^2 t^2}{N_B r^2}$ and Eqs \eqref{eq:diamond_to_spectral_start} - \eqref{eq:TS_intermediate_1} from Theorem \ref{thm:trotter_cost}  to reduce $\diamondnorm{\capUA(t/r) - \widetilde{\capUA}(t/r)} \leq 2 \norm{e^{iAt/r} - \trotterU{1}(t/r)}_{\infty}$. The last term we need to bound is the outer-loop error
 \begin{align}
     \diamondnorm{E_{\set{A, B}}(\frac{t}{r})} &= \diamondnorm{\capU(\frac{t}{r}) - \capUB(\frac{t}{r}) \circ \capUA(\frac{t}{r})} \\
     &\leq 2 \norm{e^{i H (t/r)} - e^{i B (t/r)} e^{i A (t/r)}}_{\infty} \\
@@ -788,7 +788,7 @@ assumptions for asymptotic improvements from Theorem \ref{thm:higher_order_impro
 In this section we will present some lemmas that provide useful upper bounds to the quantities used in the above expected cost expression. Since these proofs are relatively straightforward applications of the definitions given above we leave the proofs to appendix \ref{sec:appendix_a}. 
 
 \begin{restatable}{lemma}{laSquared} \label{lem:la_squared}
-Let $L_A$ denote the number of terms simulated with a higher-order Trotter formula in a Composite channel with the assumptions as defined in section \ref{sec:prelim}. Using a probabilistic partitioning scheme as defined in \ref{lem:prob_lemma}, then the second moment of $L_A$ obeys
+Let $L_A$ denote the number of terms simulated with a higher-order Trotter formula in a Composite channel with the assumptions as defined in section \ref{sec:composite_prelim}. Using a probabilistic partitioning scheme as defined in \ref{lem:prob_lemma}, then the second moment of $L_A$ obeys
 $$\mathbb{E}(L_A^2) \le |\probIndexSet|^2 - |\probIndexSet| \sum_{i \in \probIndexSet} \frac{\chi}{h_i},$$
 where $\chi$ is given in \ref{def:chi} and $\probIndexSet$ is the set of $p_i$ such that $1-p_i < 1$ as given in \ref{def:omega}.
 \end{restatable}
@@ -796,7 +796,7 @@ This result makes intuitive sense, as $L_A$ can be no larger than $|\probIndexSe
 
 We know move on to bounding the expected contribution from the QDrift channel due to the error, namely $Q(t)$. 
 \begin{restatable}{lemma}{qUpperBounds} \label{lem:expect_q_upper_bounds}
-Let $Q$ denote the contribution to the error of a Composite channel, where $Q$ is defined in \ref{def:q_of_t}, with the standard assumptions from Section \ref{sec:prelim} and a probabilistic partitioning scheme as outlined in \ref{lem:prob_lemma}. The following upper bounds hold on the first two moments for $Q$
+Let $Q$ denote the contribution to the error of a Composite channel, where $Q$ is defined in \ref{def:q_of_t}, with the standard assumptions from Section \ref{sec:composite_prelim} and a probabilistic partitioning scheme as outlined in \ref{lem:prob_lemma}. The following upper bounds hold on the first two moments for $Q$
 \begin{align}
     \expect{Q(t)} &\leq \frac{4 t^2}{N_B} \parens{\chi \lambda_{\probIndexSet} + \parens{\chi |\probIndexSet| + \lambda_{\probIndexSet^C}}^2} \label{eq:expect_q_upper_bound} \\
     \expect{Q(t)^2} &\leq \frac{4 t^2 \lambda^2}{N_B} \expect{Q(t)} \leq \frac{16 t^4 \lambda^2}{N_B^2} \parens{\chi \lambda_{\probIndexSet} + \parens{\chi |\probIndexSet| + \lambda_{\probIndexSet^C}}^2} \label{eq:expect_q_squared_upper_bound}
@@ -807,7 +807,7 @@ The main intuition to be gained from here is that as $|\probIndexSet| \to 0$ the
 
 We now move on to the last term we need to bound, which is $P$. 
 \begin{restatable}{lemma}{pUpperBound} \label{lem:p_upper_bound}
-Let $P(t)$ denote the product formula error scaling as defined in \ref{def:p_of_t} for a Composite channel with the standard assumptions as defined in \ref{sec:prelim}. Using a probabilistic partitioning scheme as defined in \ref{lem:prob_lemma} then the following upper bounds hold for the expected value of $P(t)$
+Let $P(t)$ denote the product formula error scaling as defined in \ref{def:p_of_t} for a Composite channel with the standard assumptions as defined in \ref{sec:composite_prelim}. Using a probabilistic partitioning scheme as defined in \ref{lem:prob_lemma} then the following upper bounds hold for the expected value of $P(t)$
 \begin{equation}
     \expect{P(t)} \leq \frac{(2 \Upsilon)^{2 + 2k}}{2k+1} t^{2k+1} \lambda^{2k} \parens{\lambda_{\probIndexSet} - \chi |\probIndexSet|} .\label{eq:p_upper_bound}
 \end{equation}

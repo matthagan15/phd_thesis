@@ -1,14 +1,26 @@
 // University of Toronto Thesis Typst Template
+#import "@preview/hydra:0.6.1": hydra
 #set text(font: "New Computer Modern")
 #let chapter_counter = 0
 #let chapter(
     name,
+    body,
 ) = {
-    // glob.get_mut(chapter_counter) += 1
     text(
-        [Chapter #h(2pt)] + $x$,
+        [Chapter #h(2pt)] + name,
         weight: "bold",
+        size: 20pt,
     )
+    set text(font: "New Computer Modern", size: 10pt)
+    body
+}
+
+/// returns bool
+#let is-chapter-page() = {
+    // all chapter headings
+    let chapters = query(heading.where(level: 1))
+    // return whether one of the chapter headings is on the current page
+    chapters.any(c => c.location().page() == here().page())
 }
 
 // Page Configuration
@@ -32,7 +44,7 @@
     set par(leading: 1.5em)
 }
 
-// Main Document Structure
+/// Main Document Structure
 #let ut-thesis(
     title: "Thesis Title",
     author: "Author Name",
@@ -122,9 +134,55 @@
         #outline(title: "List of Tables", target: figure.where(kind: table))
     ]
 
+
     // Main document body with Arabic numerals
-    set page(numbering: "1")
+    counter(page).update(1)
+    set page(
+        numbering: "1",
+        margin: (left: 32mm, top: 20mm, bottom: 20mm, right: 20mm),
+        footer: context if is-chapter-page() {
+            align(center)[
+                #counter(page).display("1")
+            ]
+        } else { [] },
+        header: context if is-chapter-page() {
+            []
+        } else {
+            align(right)[
+                #hydra(1) #h(1fr) #counter(page).display("1")
+            ]
+        },
+    )
+    // set page(number-align: top + right)
+    set text(
+        top-edge: 0.7em,
+        bottom-edge: -0.3em,
+        font: "New Computer Modern",
+        size: 11pt,
+    )
+    set par(leading: 1em, justify: true, first-line-indent: 7mm)
 
     // Render the body of the document
+    set heading(numbering: (..nums) => nums.pos().map(str).join("."))
+    show heading.where(level: 1): it => {
+        let number = if it.numbering != none {
+            context counter(heading).display(it.numbering)
+            // h(1em)
+        }
+        pagebreak()
+        v(3.5cm)
+        block(text("Chapter ", size: 22pt) + text(number, size: 22pt))
+        v(1.5cm)
+        block(text(it.body, size: 25pt))
+        v(10mm)
+    }
+    show heading.where(level: 2): it => {
+        let number = if it.numbering != none {
+            context counter(heading).display(it.numbering)
+        }
+        v(0.25cm)
+        text(number + h(0.2cm) + it.body, size: 16pt)
+        v(0.25cm)
+    }
     body
 }

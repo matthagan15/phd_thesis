@@ -1,8 +1,12 @@
 \chapter{Introduction}
+% \section{Attempt 2}
+The goal of this thesis is to serve as a blueprint for creating quantum channels that can prepare thermal states of arbitrary systems. This framework was primarily created as an algorithmic process to prepare input states of the form $\rho(\beta) = \frac{e^{-\beta H}}{{\rm Tr} e^{-\beta H}}$, known as Gibbs, Boltzmann, or thermal states, for simulations on a digital, fault-tolerant quantum computer. As $\rho(\beta)$ approaches the ground state as the inverse temperature $\beta$ diverges, meaning Gibbs states serve as useful proxies for problems in which ground states dictate features of dynamics, such as the electron wavefunction in banded condensed matter systems or in chemical scenarios. One of the key features of our algorithm is the addition of only one single extra qubit outside of those needed to store the state of quantum system being simulated. This may seem like a minor technical achievement, given the existence of Gibbs samplers that also have only one extra qubit or at worst a constant number of qubits overhead, but the way in which this single qubit is utilized in our algorithm highlights the connections between our channel as an algorithmic tool to prepare states of interest and the model of thermalization that we believe the physical world may actually follow. The rest of this introduction is to provide context for how the technical results contained in later chapters of this thesis contribute to the growing interplay between Physics and Theoretical Computer Science within the realm of Quantum Computing.
+
+The easiest way to grasp the context of this thesis is to first understand classical thermal states. In classical mechanics we typically have access to a Hamiltonian $H$ that is a function on phase space $(x, p)$ to the reals $\mathbb{R}$. We can turn this function into a probability distribution via the canonical ensemble $p_\beta (x, p) = \frac{e^{- \beta H(x, p)}}{\int dx dp e^{-\beta H(x, p)}}$, which can be thought of as the ``density'' of particles near a particular $(x,p)$ in phase space for a thermodynamically large collection of non-interacting particles under the same Hamiltonian $H$. The inverse temperature $\beta$, typically taken to be $\frac{1}{k_\beta T}$ where $k_\beta$ is Boltzmann's constant and T the temperature, plays an important role in shaping the distribution $p_\beta(x,p)$. For example, in the $\beta \to \infty$ the distribution becomes concentrated at the minimum energy points of $H(x, p)$, which correspond to points with zero momentum $p=0$ and are minimums of the potential energy $V(x)$. This shows that the problem of preparing classical thermal states somehow ``contains'' the problem of function optimization, and in fact being able to sample from classical thermal states for arbitrarily large $\beta$ allows us to approximate the partition function $\mathcal{Z} = \int e^{-\beta H(x,p)} dx dp$, which is known to be a \#P-Hard computational problem.
+
+
 
 \section{Motivation}
-
-In everyday life we interact with temperature on an intuitive sense: hot objects cool down, refrigerators consume energy to keep things cold, and the winters here in Toronto suck all possible heat out of every living thing. We typically don't think too much about how these systems equilibrate, we now that there are convection currents in liquids that transport heat, that solids, metals in particular, conduct heat naturally and that radiation can transmit heat, which occurs in microwaves and from sunlight. If you are cooking a roast and want to know if it's done, you just stick the thermometer in and wait a few seconds for it to equilibrate. You don't need for the thermometer to meet some kind of interaction model between the thermometer and the food, it just equilibrates given enough time. 
 
 This intuitive understanding breaks down at the quantum level. For starters, to observe delicate quantum effects experimentalists will typically try to isolate their desired system as much as possible from the environment, which can decohere sensitive wavefunctions. When the system is completely isolated from the environment, what does ``equilibrium'' even refer to? One of the leading answers to this question says that for large systems, sufficiently ``random looking'' Hamiltonians can appear to be in thermal equilibrium to local observables. A large enough, random enough system can act as it's own bath to small subsystems. The codification of these conditions is known as the Eigenstate Thermalization Hypothesis (ETH), which is yet to be proven for all possible systems (hence the name Hypothesis).
 
@@ -71,7 +75,7 @@ We will now collect these basic observations, along with an optimization that el
 \begin{proof}
     We first note that 
     \begin{equation}
-        e^{i P t} = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} P^k = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} (U_P \prod_i Z_i^{p_i} U_P^\dagger)^k = U_P \left(\sum_{k = 0}^\infty \frac{(i t)^k}{k!} ( \prod_i Z_i^{p_i})^k \right) U_P^\dagger = U_P e^{i \prod_i Z_i^{p_i} t} U_P^\dagger.
+        e^{i P t} = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} P^k = \sum_{k = 0}^\infty \frac{(i t)^k}{k!} (U_P \prod_i Z_i^{p_i} U_P^\dagger)^k = U_P \left(\sum_{k = 0}^\infty \frac{(i t)^k}{k!} ( \prod_i Z_i^{p_i})^k \right) U_P^\dagger = U_P e^{i \prod_i Z_i^{p_i} t} U_P^\dagger. \label{eq:change_basis_of_exponential}
     \end{equation}
     This reduces our problem from arbitrary Pauli rotations to just Pauli $Z$ rotations. We now need to show that the CNOT sequence and single qubit $Z$ rotation perform arbitrary tensor product $Z$ rotations. Let CNOT$(i,j)$ be a controlled NOT gate with control qubit $i$ and target qubit $j$. Let $\ket{s} = \ket{s_1} \ket{s_2} \ldots \ket{s_w}$ denote a basis state for the qubits that are in the support of $P$. As CNOT$(1,2) \ket{a}\ket{b} = \ket{a} \ket{a \oplus b}$, where $a \oplus b$ is the addition of $a$ and $b$ mod 2, we have that the product
     \begin{equation}
@@ -86,13 +90,7 @@ We will now collect these basic observations, along with an optimization that el
     \begin{align}
         \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) e^{i \bigoplus_{i = 1}^w s_i t} \ket{s_1} \ldots \ket{s_{w- 1}} \ket{s_1 \oplus \ldots \oplus s_w} &= e^{i \bigoplus_{i = 1}^w s_i t} \ket{s_1} \ldots \ket{s_{w- 1}} \ket{s_w}.
     \end{align}
-    As the circuit performs as desired on an arbitrary basis state, by linearity it extends to an arbitrary superposition.
-
-    Since we just showed that 
-    \begin{equation}
-    \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) R_{Z_{s_w}}(t) \prod_{i \in {\rm supp}(P) \setminus s_w} {\rm CNOT}(i, s_w) = e^{i \prod_i Z_i^{p_i} t}
-    \end{equation}
-    and the change of basis unitary $U_P$ from the $P$ basis to the computational $Z$ basis consist solely of tensor products of $H$ and $S$ we have therefore shown that $e^{i P t}$ can be implemented using single qubit unitaries and CNOT gates with no ancilla qubits.
+    As the circuit performs as desired on an arbitrary basis state, by linearity it extends to an arbitrary superposition. Combined with the fact that the basis only needs to be changed once, as show in Eq. \eqref{eq:change_basis_of_exponential}, we are done.
 \end{proof}
 
 Lemma \ref{lem:pauli_rotations} serves as the basis for a class of simulation algorithms known as Pauli formulas.
@@ -104,13 +102,15 @@ This spurred the development of more sophisticated techniques for the Hamiltonia
 
 Before we present the first order Trotter theorem we will need to define some channels first. Let $\mathcal{U}(t)$ denote the ideal time evolution channel with respect to a hamiltonian $H = \sum_{i = 1}^L h_i H_i$
 \begin{equation}
-    \mathcal{U}(t) \coloneqq U(t) \rho U(t)^dagger = e^{-i H t} \rho e^{+i H t}.
+    \mathcal{U}(t) \coloneqq U(t) \rho U(t)^\dagger = e^{-i H t} \rho e^{+i H t}.
 \end{equation}
 The first order Trotter formula is given by the following unitary
 \begin{equation}
-    U_{\rm TS}^{(1)}(t) \coloneqq e^{i h_1 H_1 t}e^{i h_2 H_2 t} \ldots e^{i h_L H_L t} = \prod_{i = 1}^L e^{i h_i H_i t},
+    U_{\rm TS}^{(1)}(t) \coloneqq e^{i h_1 H_1 t}e^{i h_2 H_2 t} \ldots e^{i h_L H_L t} = \prod_{i = 1}^L e^{i h_i H_i t}.
 \end{equation}
-which is typically repeated for $r$ applications with each simulating a time $t / r$, which is also called the Trotter step size. We bound the number of applications $r$ needed for the first order Trotter channel $\mathcal{U}_{\rm TS}^{(1)}(t)$ to approximate the ideal dynamics below.
+This first order expression can be used to build higher order formulas, which we denote $U_{\rm TS}^{(2k)}$ for a $2k$\ts{th} order formula unitary and $\mathcal{U}_{\rm TS}^{(2k)}$ for the channel. The higher order expressions along with their runtime costs and errors are presented in detail in Section \ref{sec:composite_prelim}.
+
+
 \begin{theorem}[First Order Trotter]
     Given a Hamiltonian $H = \sum_{i = 1}^L h_i H_i$, there exists an $r$ such that the first order Trotter formula $U_{\rm TS}^{(1)}(t)$ is an $\epsilon$ approximation to the ideal time evolution
     \begin{equation}
@@ -198,4 +198,8 @@ The next thing we have to discuss is the QDrift Channel. This channel is a rando
     \mathcal{U}_{\rm QD}(\rho; t) \coloneqq \sum_{i = 1}^L \frac{h_i}{\norm{h}} e^{-i H_i \tau} \rho e^{+i H_i \tau}.
 \end{equation}
 
-
+\begin{itemize}
+    \item What exactly is this thesis doing? The composite simulation section shows how to split a hamiltonian up into two pieces so that you can tailor the simulation algorithm for the hamiltonian of interest. 
+    \item The next section shows how to turn an ideal time evolution channel into a thermalizing channel. 
+    \item The introduction should aim to motivate these two topics. There should not be any theorems or proofs in the introduction.
+\end{itemize}

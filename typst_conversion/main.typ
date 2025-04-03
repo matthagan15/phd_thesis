@@ -1,5 +1,6 @@
 #import "conf.typ": ut-thesis, chapter
 // #import("conf.typ")
+#import "@preview/hydra:0.6.1": hydra
 #include "macros.typ"
 
 // Example Usage
@@ -14,24 +15,7 @@
 // #show: thmrules
 // #show: thmrules.with(qed-symbol: $square$)
 
-Junk.
-
-#chapter("test one")
-
-= Introduction
 #include "intro.typ"
-
-== Research Background
-More detailed content about the research context.
-
-= Conclusion
-Concluding remarks of the dissertation.
-
-#figure(
-    table(
-        "1", "2", "3"
-    ),
-    caption: [],
-)
+#include "composite.typ"
 
 #bibliography("references.bib")
