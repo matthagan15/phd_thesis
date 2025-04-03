@@ -1,4 +1,4 @@
-#import "conf.typ": ut-thesis, chapter
+#import "conf.typ": ut-thesis
 // #import("conf.typ")
 #import "@preview/hydra:0.6.1": hydra
 #include "macros.typ"
@@ -17,5 +17,7 @@
 
 #include "intro.typ"
 #include "composite.typ"
+#include "thermal_state.typ"
+#include "appendix.typ"
 
 #bibliography("references.bib")

@@ -1,3 +1,6 @@
+#import "macros.typ": *
+#import "conf.typ": *
+
 = Composite Simulations
 
 The simulation of quantum systems remains one of the most compelling applications for future digital quantum computers @whitfield2011simulation @jordan2012quantum @reiher2017elucidating @babbush2019quantum @su2021fault @o2021efficient.

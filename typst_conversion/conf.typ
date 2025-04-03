@@ -1,19 +1,6 @@
 // University of Toronto Thesis Typst Template
 #import "@preview/hydra:0.6.1": hydra
 #set text(font: "New Computer Modern")
-#let chapter_counter = 0
-#let chapter(
-    name,
-    body,
-) = {
-    text(
-        [Chapter #h(2pt)] + name,
-        weight: "bold",
-        size: 20pt,
-    )
-    set text(font: "New Computer Modern", size: 10pt)
-    body
-}
 
 /// returns bool
 #let is-chapter-page() = {
@@ -21,27 +8,6 @@
     let chapters = query(heading.where(level: 1))
     // return whether one of the chapter headings is on the current page
     chapters.any(c => c.location().page() == here().page())
-}
-
-// Page Configuration
-#let page-setup(
-    margin-size: (
-        left: 32mm, // Left margin 1 1/4" (32 mm)
-        other: 20mm, // Other margins 3/4" (20 mm)
-    ),
-) = {
-    set page(
-        paper: "us-letter",
-        margin: (
-            left: margin-size.left,
-            right: margin-size.other,
-            top: margin-size.other,
-            bottom: margin-size.other,
-        ),
-    )
-
-    // Line spacing: at least 1.5
-    set par(leading: 1.5em)
 }
 
 /// Main Document Structure
@@ -54,29 +20,32 @@
     body,
 ) = {
     // Page setup
-    page-setup()
+    set page(
+        paper: "us-letter",
+        margin: (left: 32mm, top: 20mm, bottom: 20mm, right: 20mm),
+    )
 
     // Title Page (no numbering, centered)
     page(
         // Approximate positioning based on guidelines
-        margin: (top: 2in, bottom: 1.25in),
+
         align(center)[
-            #v(0pt)
+            #v(30mm)
             #text(size: 12pt)[#smallcaps[#title]]
 
-            #v(1.5in)
+            #v(4cm)
             by
 
-            #v(1.5in)
+            #v(4cm)
             #text(size: 12pt)[#author]
 
-            #v(2in)
+            #v(5cm)
             A thesis submitted in conformity with the requirements \
             for the degree of Doctor of Philosophy\
             Department of Physics \
             University of Toronto
 
-            #v(1.25in)
+            #v(3cm)
             © Copyright by #author #graduation-year
         ],
     )
@@ -149,7 +118,8 @@
             []
         } else {
             align(right)[
-                #hydra(1) #h(1fr) #counter(page).display("1")
+                CHAPTER #upper(hydra(1)) #h(1fr) #counter(page).display("1")
+                // CHAPTER #hydra(1, display: (hydra_ctx, hydra_content) => hydra_content) #h(1fr) #counter(page).display("1")
             ]
         },
     )
